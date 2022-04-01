@@ -1,5 +1,5 @@
-const { Unauthorized } = require("http-errors");
-const { User } = require("../../models");
+const { Unauthorized } = require('http-errors');
+const { User } = require('../../models');
 
 const login = async (req, res) => {
   const { email, password } = req.body;

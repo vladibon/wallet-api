@@ -5,10 +5,7 @@ const getContactById = async (req, res) => {
   const { contactId } = req.params;
   const { _id } = req.user;
 
-  const result = await Contact.findOne({ _id: contactId, owner: _id }).populate(
-    'owner',
-    'email',
-  );
+  const result = await Contact.findOne({ _id: contactId, owner: _id }).populate('owner', 'email');
 
   if (!result) throw new NotFound();
 

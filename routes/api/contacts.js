@@ -14,11 +14,7 @@ router.get('/:contactId', auth, ctrlWrapper(ctrl.getContactById));
 
 router.delete('/:contactId', auth, ctrlWrapper(ctrl.removeContact));
 
-router.put(
-  '/:contactId',
-  [auth, validation(joiSchema)],
-  ctrlWrapper(ctrl.updateContact),
-);
+router.put('/:contactId', [auth, validation(joiSchema)], ctrlWrapper(ctrl.updateContact));
 
 router.patch(
   '/:contactId/favorite',
