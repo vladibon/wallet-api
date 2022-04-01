@@ -9,7 +9,7 @@ const login = async (req, res) => {
   if (!user || !user?.comparePassword(password))
     throw new Unauthorized(`Email or password is wrong`);
 
-  if (!user.verify) throw new Unauthorized('Email verification is required ');
+  // if (!user.verify) throw new Unauthorized('Email verification is required ');
 
   user.setToken().save();
 
@@ -17,8 +17,7 @@ const login = async (req, res) => {
     token: user.token,
     user: {
       email: user.email,
-      subscription: user.subscription,
-      avatarURL: user.avatarURL,
+      name: user.name,
     },
   });
 };

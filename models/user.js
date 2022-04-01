@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const { nanoid } = require('nanoid');
-const gravatar = require('gravatar');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
@@ -23,25 +22,18 @@ const userSchema = Schema(
       required: [true, 'Password is required'],
       minlength: 6,
     },
-    verificationToken: {
-      type: String,
-    },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    subscription: {
-      type: String,
-      enum: ['starter', 'pro', 'business'],
-      default: 'starter',
-    },
-    avatarURL: {
-      type: String,
-      default: null,
-    },
+
+    // verify: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     token: {
       type: String,
       default: null,
+    },
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
     },
   },
   { versionKey: false, timestamps: true },
@@ -67,8 +59,13 @@ userSchema.methods.verifyEmail = function () {
   return this;
 };
 
-userSchema.methods.setAvatar = function () {
-  this.avatarURL = gravatar.url(this.email);
+// userSchema.methods.setAvatar = function () {
+//   this.avatarURL = gravatar.url(this.email);
+//   return this;
+// };
+
+userSchema.methods.setName = function (name) {
+  this.name = name;
   return this;
 };
 
@@ -78,6 +75,7 @@ userSchema.methods.setToken = function () {
 };
 
 const joiSchema = Joi.object({
+  name: Joi.string().min(3).max(10),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
 });

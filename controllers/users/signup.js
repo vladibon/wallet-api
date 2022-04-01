@@ -1,26 +1,24 @@
 const { Conflict } = require('http-errors');
 const { User } = require('../../models');
-const sendEmail = require('../../services/sendEmail');
+// const sendEmail = require('../../services/sendEmail');
 
 const signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
-  if (await User.findOne({ email }))
-    throw new Conflict(`User with email:${email} already exist`);
+  if (await User.findOne({ email })) throw new Conflict(`User with email:${email} already exist`);
 
   const user = await new User({ email })
     .setPassword(password)
     .setVerificationToken()
-    .setAvatar()
+    .setName(name)
     .save();
 
-  await sendEmail(email, user.verificationToken);
+  // await sendEmail(email, user.verificationToken);
 
   res.status(201).json({
     user: {
       email: user.email,
-      subscription: user.subscription,
-      avatarURL: user.avatarURL,
+      name: user.name,
     },
   });
 };

@@ -20,8 +20,7 @@ const auth = async (req, _, next) => {
 
     next();
   } catch (error) {
-    if (error.message.includes('invalid') || error.message.includes('expired'))
-      error.status = 401;
+    if (error.message.includes('invalid') || error.message.includes('expired')) error.status = 401;
 
     next(error);
   }
