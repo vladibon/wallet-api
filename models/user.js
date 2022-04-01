@@ -1,9 +1,8 @@
-const { Schema, model } = require('mongoose');
-const bcrypt = require('bcryptjs');
-const { nanoid } = require('nanoid');
-const gravatar = require('gravatar');
-const jwt = require('jsonwebtoken');
-const Joi = require('joi');
+const { Schema, model } = require("mongoose");
+const bcrypt = require("bcryptjs");
+const { nanoid } = require("nanoid");
+const jwt = require("jsonwebtoken");
+const Joi = require("joi");
 
 const { SECRET_KEY } = process.env;
 
@@ -14,37 +13,30 @@ const userSchema = Schema(
   {
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, "Email is required"],
       unique: true,
       match: emailRegexp,
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, "Password is required"],
       minlength: 6,
     },
-    verificationToken: {
-      type: String,
-    },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    subscription: {
-      type: String,
-      enum: ['starter', 'pro', 'business'],
-      default: 'starter',
-    },
-    avatarURL: {
-      type: String,
-      default: null,
-    },
+
+    // verify: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     token: {
       type: String,
       default: null,
     },
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+    },
   },
-  { versionKey: false, timestamps: true },
+  { versionKey: false, timestamps: true }
 );
 
 userSchema.methods.setPassword = function (password) {
@@ -67,17 +59,23 @@ userSchema.methods.verifyEmail = function () {
   return this;
 };
 
-userSchema.methods.setAvatar = function () {
-  this.avatarURL = gravatar.url(this.email);
+// userSchema.methods.setAvatar = function () {
+//   this.avatarURL = gravatar.url(this.email);
+//   return this;
+// };
+
+userSchema.methods.setName = function (name) {
+  this.name = name;
   return this;
 };
 
 userSchema.methods.setToken = function () {
-  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: '1d' });
+  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: "1d" });
   return this;
 };
 
 const joiSchema = Joi.object({
+  name: Joi.string().min(3).max(10),
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
 });
@@ -87,10 +85,10 @@ const emailJoiSchema = Joi.object({
 });
 
 const subscriptionJoiSchema = Joi.object({
-  subscription: Joi.string().valid('starter', 'pro', 'business').required(),
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
-const User = model('user', userSchema);
+const User = model("user", userSchema);
 
 module.exports = {
   User,
