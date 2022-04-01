@@ -22,7 +22,6 @@ const userSchema = Schema(
       required: [true, 'Password is required'],
       minlength: 6,
     },
-
     // verify: {
     //   type: Boolean,
     //   default: false,
