@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "API overview",
+    "title": "Wallet API overview",
     "version": "v1"
   },
   "tags": ["User", "Auth"],
