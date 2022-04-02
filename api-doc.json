@@ -4,13 +4,13 @@
     "title": "Wallet API overview",
     "version": "v1"
   },
-  "tags": ["User", "Auth"],
+  "tags": ["Auth", "Users"],
   "schemes": ["http"],
   "paths": {
-    "/auth/signup": {
+    "/api/auth/signup": {
       "post": {
         "tags": ["Auth"],
-        "summary": "registrate user",
+        "summary": "register user",
         "produces": ["application/json"],
         "requestBody": {
           "description": "Body of request for user registration",
@@ -52,7 +52,8 @@
         }
       }
     },
-    "/auth/login": {
+
+    "/api/auth/login": {
       "post": {
         "tags": ["Auth"],
         "summary": "login user",
@@ -97,7 +98,8 @@
         }
       }
     },
-    "/auth/logout": {
+
+    "/api/auth/logout": {
       "get": {
         "tags": ["Auth"],
         "summary": "logout user",
@@ -106,13 +108,30 @@
         "responses": {
           "204": {
             "description": "User successfully logged out"
+          },
+          "401": {
+            "description": "User unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/user/current": {
+
+    "/api/users/current": {
       "get": {
-        "tags": ["User"],
+        "tags": ["Users"],
         "summary": "get user information",
         "produces": ["application/json"],
 
@@ -123,6 +142,22 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User-current-response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
                 }
               }
             }
@@ -137,17 +172,21 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "sdfdfhgfd"
+            "example": "6248c39b6e52d51aeeabcc33"
           },
           "email": {
             "type": "string",
             "example": "user@gmail.com"
           },
-          "name": { "type": "string", "example": "Mango" },
           "password": {
             "type": "string",
             "example": "strong_password"
-          }
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDhjMzliNmU1MmQ1MWFlZWFiY2MzMyIsImlhdCI6MTY0ODkzNzY1OSwiZXhwIjoxNjQ5MDI0MDU5fQ.R_xVuzsK9Nzs9sj98Lk1lidJB27xDUjhYBOiPU-_fmY"
+          },
+          "name": { "type": "string", "example": "Mango" }
         }
       },
       "User-registration-request": {
@@ -197,7 +236,8 @@
         "type": "object",
         "properties": {
           "token": {
-            "type": "string"
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDhjMzliNmU1MmQ1MWFlZWFiY2MzMyIsImlhdCI6MTY0ODkzNzY1OSwiZXhwIjoxNjQ5MDI0MDU5fQ.R_xVuzsK9Nzs9sj98Lk1lidJB27xDUjhYBOiPU-_fmY"
           },
           "user": {
             "type": "object",
@@ -206,14 +246,15 @@
                 "type": "string",
                 "example": "mango@gmail.com"
               },
-              "password": {
+              "name": {
                 "type": "string",
-                "example": "strong_password"
+                "example": "Mango"
               }
             }
           }
         }
       },
+
       "User-current-response": {
         "type": "object",
         "properties": {
@@ -229,6 +270,7 @@
       }
     }
   },
+
   "definitions": {
     "Pet": {
       "required": ["id", "name"],

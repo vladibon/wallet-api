@@ -73,8 +73,13 @@ userSchema.methods.setToken = function () {
   return this;
 };
 
-const joiSchema = Joi.object({
-  name: Joi.string().min(3).max(10),
+const signupJoiSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+  password: Joi.string().min(6).required(),
+  name: Joi.string().min(3).max(10).required(),
+});
+
+const loginJoiSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
 });
@@ -91,7 +96,8 @@ const User = model('user', userSchema);
 
 module.exports = {
   User,
-  joiSchema,
+  signupJoiSchema,
+  loginJoiSchema,
   emailJoiSchema,
   subscriptionJoiSchema,
 };
