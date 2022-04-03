@@ -1,15 +1,15 @@
 {
-  "income": ["Регулярный доход", "Нерегулярный доход"],
+  "income": ["Regular income", "Irregular income"],
   "expense": [
-    "Основные расходы",
-    "Еда",
-    "Машина",
-    "Развитие",
-    "Заботы о себе",
-    "Забота о детях",
-    "Товары для дома",
-    "Образование",
-    "Досуг",
-    "Другие расходы"
+    "Basic expenses",
+    "Food",
+    "Car",
+    "Personal growth",
+    "Self care",
+    "Child care",
+    "Household products",
+    "Education",
+    "Leisure",
+    "Other expenses"
   ]
 }
