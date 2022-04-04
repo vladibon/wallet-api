@@ -9,7 +9,8 @@ const signup = async (req, res) => {
 
   const user = await new User({ email })
     .setPassword(password)
-    .setVerificationToken()
+    // .setVerificationToken()
+    .setToken()
     .setName(name)
     .save();
 
@@ -19,6 +20,7 @@ const signup = async (req, res) => {
     user: {
       email: user.email,
       name: user.name,
+      token: user.token,
     },
   });
 };

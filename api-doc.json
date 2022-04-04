@@ -260,6 +260,10 @@
           "name": {
             "type": "string",
             "example": "Mango"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNGIwZTgxNGFjNjEwNTkyNDM0NDRkNyIsImlhdCI6MTY0OTA4NjA4MSwiZXhwIjoxNjQ5MTcyNDgxfQ.6W2lAm1N3VC_ZM2EmiWLIMzC32E1Zs7m5SF9X55tFDc"
           }
         }
       },
