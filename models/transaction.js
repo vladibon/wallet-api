@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const { Schema, model } = require('mongoose');
 // const Joi = require('joi');
 
@@ -5,9 +6,9 @@ const transactionSchema = Schema(
   {
     date: {
       type: Date,
-      required: true,
+      required: [true, 'Set date of transaction'],
     },
-    typeOfTransaction: {
+    type: {
       type: Boolean,
       default: false,
       // true - deposite, false - withdraw
@@ -22,7 +23,7 @@ const transactionSchema = Schema(
     },
     amount: {
       type: Number,
-      required: true,
+      required: [true, 'Amount should be at least 0.01'],
       min: 0.01,
     },
     balance: {
@@ -37,8 +38,20 @@ const transactionSchema = Schema(
   { versionKey: false, timestamps: true },
 );
 
+const joiAddSchema = Joi.object({
+  date: Joi.date().required(),
+  type: Joi.boolean(),
+  category: Joi.string(),
+  comment: Joi.string(),
+  amount: Joi.number().min(0.01).required(),
+});
+
 const Transaction = model('transaction', transactionSchema);
 
 module.exports = {
   Transaction,
+
+  schemas: {
+    add: joiAddSchema,
+  },
 };

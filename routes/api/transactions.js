@@ -1,18 +1,18 @@
 const express = require('express');
 
 const { auth, validation, ctrlWrapper } = require('../../middlewares');
-const { joiSchema, statusJoiSchema } = require('../../models/transaction');
+const { schemas } = require('../../models');
 const { transactions: ctrl } = require('../../controllers');
 
 const router = express.Router();
 
 router.get('/', auth, ctrlWrapper(ctrl.listTransactions));
 
-router.post('/', auth, ctrlWrapper(ctrl.addTransaction));
+router.post('/', [auth, validation(schemas.add)], ctrlWrapper(ctrl.addTransaction));
 
 // router.get('/:contactId', auth, ctrlWrapper(ctrl.getContactById));
 
-// router.delete('/:contactId', auth, ctrlWrapper(ctrl.removeContact));
+// router.delete('/:transactionId', auth, ctrlWrapper(ctrl.removeTransaction));
 
 // router.put('/:contactId', [auth, validation(joiSchema)], ctrlWrapper(ctrl.updateContact));
 
