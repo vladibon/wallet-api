@@ -16,8 +16,8 @@
     "application/json"
   ],
   "servers": [
-     {
-      "url": "https://wallet-proj.herokuapp.com/"
+    {
+      "url": "https://wallet-proj.herokuapp.com:3001/"
     },
     {
       "url": "http://localhost:4000/"
@@ -194,6 +194,48 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User-current-response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/balance": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "get user balance (requires authentication token)",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User-balance-response"
                 }
               }
             }
@@ -430,6 +472,23 @@
           "name": {
             "type": "string",
             "example": "Mango"
+          }
+        }
+      },
+      "User-balance-response": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "mango@gmail.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "Mango"
+          },
+          "balance": {
+            "type":"number",
+          "example": 0.00
           }
         }
       },
