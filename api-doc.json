@@ -4,7 +4,7 @@
     "title": "Wallet API overview",
     "version": "v1"
   },
-  "tags": ["Auth", "Users"],
+  "tags": ["Auth", "Users", "Categories"],
   "schemes": ["http"],
   "paths": {
     "/api/auth/signup": {
@@ -102,8 +102,13 @@
     "/api/auth/logout": {
       "get": {
         "tags": ["Auth"],
-        "summary": "logout user",
+        "summary": "logout user (requires authentication token)",
         "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
 
         "responses": {
           "204": {
@@ -132,8 +137,13 @@
     "/api/users/current": {
       "get": {
         "tags": ["Users"],
-        "summary": "get user information",
+        "summary": "get user information (requires authentication token)",
         "produces": ["application/json"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
 
         "responses": {
           "200": {
@@ -156,6 +166,40 @@
                     "message": {
                       "type": "string",
                       "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "get transaction categories",
+        "produces": ["application/json"],
+
+        "responses": {
+          "200": {
+            "description": "Returns transaction categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "income": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "expense": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -267,6 +311,13 @@
             "example": "Mango"
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   },
