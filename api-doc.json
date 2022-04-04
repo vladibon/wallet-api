@@ -1,19 +1,59 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.0.1",
   "info": {
+    "version": "v1",
     "title": "Wallet API overview",
-    "version": "v1"
+    "description": "Wallet API overview",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
   },
-  "tags": ["Auth", "Users", "Categories"],
-  "schemes": ["http"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "servers": [
+     {
+      "url": "https://wallet-proj.herokuapp.com/"
+    },
+    {
+      "url": "http://localhost:4000/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Categories",
+      "description": "Categories endpoint"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions endpoint"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/api/auth/signup": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "register user",
-        "produces": ["application/json"],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User Registration",
         "requestBody": {
           "description": "Body of request for user registration",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -24,14 +64,17 @@
         },
         "responses": {
           "201": {
-            "description": "user was created successfully",
+            "description": "User was created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User-registration-respons"
+                  "$ref": "#/components/schemas/User-registration-response"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad request"
           },
           "409": {
             "description": "Can't create user because email already taken",
@@ -52,12 +95,12 @@
         }
       }
     },
-
     "/api/auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "login user",
-        "produces": ["application/json"],
         "requestBody": {
           "content": {
             "application/json": {
@@ -67,7 +110,6 @@
             }
           }
         },
-
         "responses": {
           "200": {
             "description": "User successfully logged in",
@@ -98,18 +140,18 @@
         }
       }
     },
-
     "/api/auth/logout": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "logout user (requires authentication token)",
-        "produces": ["application/json"],
+        "parameters": [],
         "security": [
           {
-            "bearerAuth": []
+            "Bearer": []
           }
         ],
-
         "responses": {
           "204": {
             "description": "User successfully logged out"
@@ -133,18 +175,18 @@
         }
       }
     },
-
     "/api/users/current": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "get user information (requires authentication token)",
-        "produces": ["application/json"],
+        "parameters": [],
         "security": [
           {
-            "bearerAuth": []
+            "Bearer": []
           }
         ],
-
         "responses": {
           "200": {
             "description": "Returns user information",
@@ -177,10 +219,10 @@
     },
     "/api/categories": {
       "get": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "summary": "get transaction categories",
-        "produces": ["application/json"],
-
         "responses": {
           "200": {
             "description": "Returns transaction categories",
@@ -208,6 +250,73 @@
           }
         }
       }
+    },
+    "/api/transactions": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "User's transactions",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User's Transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transactions-response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "User's transactions",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Body of request for user transactions",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transactions-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User's Transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transactions-response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -230,35 +339,48 @@
             "type": "string",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDhjMzliNmU1MmQ1MWFlZWFiY2MzMyIsImlhdCI6MTY0ODkzNzY1OSwiZXhwIjoxNjQ5MDI0MDU5fQ.R_xVuzsK9Nzs9sj98Lk1lidJB27xDUjhYBOiPU-_fmY"
           },
-          "name": { "type": "string", "example": "Mango" }
-        }
-      },
-      "User-registration-request": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "example": "mango@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "strong_password"
-          },
           "name": {
             "type": "string",
             "example": "Mango"
           }
         }
       },
-      "User-registration-respons": {
+      "User-registration-request": {
+        "type": "object",
+        "required": [
+          "email",
+          "password",
+          "name"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "example": "mango@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "strong_password"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Mango"
+          }
+        }
+      },
+      "User-registration-response": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
+            "description": "User's email",
             "example": "mango@gmail.com"
           },
           "name": {
             "type": "string",
+            "description": "User's name",
             "example": "Mango"
           }
         }
@@ -298,7 +420,6 @@
           }
         }
       },
-
       "User-current-response": {
         "type": "object",
         "properties": {
@@ -311,20 +432,140 @@
             "example": "Mango"
           }
         }
+      },
+      "Transactions-request": {
+        "type": "object",
+        "required": [
+          "date",
+          "amount"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Date of transaction",
+            "example": "2022-01-03T23:00:00.000Z"
+          },
+          "type": {
+            "type": "boolean",
+            "description": "Deposit or withdraw",
+            "example": true
+          },
+          "category": {
+            "type": "string",
+            "description": "Category",
+            "example": "add"
+          },
+          "amount": {
+            "type": "number",
+            "description": "amount",
+            "example": 700
+          }
+        }
+      },
+      "Transactions-response": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Transaction id",
+              "example": "624aa2c0f3a2ee5f009b105d"
+            },
+            "date": {
+              "type": "string",
+              "description": "Date of transaction",
+              "example": "2022-01-03T23:00:00.000Z"
+            },
+            "type": {
+              "type": "boolean",
+              "description": "Deposit or withdraw",
+              "example": true
+            },
+            "category": {
+              "type": "string",
+              "description": "Category",
+              "example": "add"
+            },
+            "amount": {
+              "type": "number",
+              "description": "amount",
+              "example": 700
+            },
+            "owner": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "User's Id",
+                  "example": "624963910b1fdc35f4c103ae"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "mango@gmail.com"
+                }
+              }
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Date of creation",
+              "example": "2022-01-03T23:00:00.000Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "description": "Date of modification",
+              "example": "2022-01-03T23:00:00.000Z"
+            }
+          }
+        },
+        "example": [
+          {
+            "_id": "624aa2c0f3a2ee5f009b105d",
+            "date": "2022-01-03T23:00:00.000Z",
+            "type": true,
+            "category": "add1",
+            "comment": "",
+            "amount": 700,
+            "balance": 700,
+            "owner": {
+              "_id": "624963910b1fdc35f4c103ae",
+              "email": "Michael.Paukov@gmail.com"
+            },
+            "createdAt": "2022-04-04T07:48:16.807Z",
+            "updatedAt": "2022-04-04T07:48:16.807Z"
+          },
+          {
+            "_id": "624aa2c8f3a2ee5f009b1061",
+            "date": "2022-02-03T23:00:00.000Z",
+            "type": true,
+            "category": "add2",
+            "comment": "",
+            "amount": 700,
+            "balance": 1400,
+            "owner": {
+              "_id": "624963910b1fdc35f4c103ae",
+              "email": "Michael.Paukov@gmail.com"
+            },
+            "createdAt": "2022-04-04T07:48:24.034Z",
+            "updatedAt": "2022-04-04T07:48:24.034Z"
+          }
+        ]
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
+      "Bearer": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
       }
     }
   },
-
   "definitions": {
     "Pet": {
-      "required": ["id", "name"],
+      "required": [
+        "id",
+        "name"
+      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -338,6 +579,5 @@
         }
       }
     }
-  },
-  "consumes": ["application/json"]
+  }
 }
