@@ -203,6 +203,46 @@
         }
       }
     },
+    "/api/users/balance": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "get user balance (requires authentication token)",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User-balance-response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/categories": {
       "get": {
         "tags": ["Categories"],
@@ -387,10 +427,23 @@
       "User-registration-response": {
         "type": "object",
         "properties": {
-          "email": {
+          "token": {
             "type": "string",
-            "description": "User's email",
-            "example": "mango@gmail.com"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDhjMzliNmU1MmQ1MWFlZWFiY2MzMyIsImlhdCI6MTY0ODkzNzY1OSwiZXhwIjoxNjQ5MDI0MDU5fQ.R_xVuzsK9Nzs9sj98Lk1lidJB27xDUjhYBOiPU-_fmY"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "mango@gmail.com"
+              },
+              "name": {
+                "type": "string",
+                "example": "Mango"
+              }
+            }
           },
           "name": {
             "type": "string",
