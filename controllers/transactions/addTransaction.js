@@ -2,6 +2,7 @@ const { Transaction } = require('../../models');
 
 const addTransaction = async (req, res) => {
   const { _id } = req.user;
+
   const data = await Transaction.find({ owner: _id });
   const sortedData = [...data].sort((a, b) => b.updatedAt - a.updatedAt);
 
