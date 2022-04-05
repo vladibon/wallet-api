@@ -278,7 +278,7 @@
     "/api/transactions": {
       "get": {
         "tags": ["Transactions"],
-        "summary": "User's transactions",
+        "summary": "Get user's transactions (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -287,7 +287,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User's Transactions",
+            "description": "Get user's transactions",
             "content": {
               "application/json": {
                 "schema": {
@@ -303,7 +303,7 @@
       },
       "post": {
         "tags": ["Transactions"],
-        "summary": "User's transactions",
+        "summary": "Post user's transaction (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -311,7 +311,7 @@
           }
         ],
         "requestBody": {
-          "description": "Body of request for user transactions",
+          "description": "Body of request for post user's transaction",
           "required": true,
           "content": {
             "application/json": {
@@ -341,7 +341,7 @@
     "/api/transactions/stats": {
       "get": {
         "tags": ["Transactions"],
-        "summary": "User's transactions statistic (requires authentication token)",
+        "summary": "Get user's transactions statistic (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -349,7 +349,7 @@
           }
         ],
         "requestBody": {
-          "description": "Body of request for user statistic",
+          "description": "Body of request for get user's transactions statistic",
           "required": true,
           "content": {
             "application/json": {
