@@ -9,13 +9,15 @@ const signup = async (req, res) => {
 
   const user = await new User({ email })
     .setPassword(password)
-    .setVerificationToken()
+    // .setVerificationToken()
+    .setToken()
     .setName(name)
     .save();
 
   // await sendEmail(email, user.verificationToken);
 
   res.status(201).json({
+    token: user.token,
     user: {
       email: user.email,
       name: user.name,

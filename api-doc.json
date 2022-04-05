@@ -9,15 +9,9 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "servers": [
-    {}
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{}],
   "tags": [
     {
       "name": "Auth",
@@ -36,15 +30,11 @@
       "description": "Transactions endpoint"
     }
   ],
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/api/auth/signup": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User Registration",
         "requestBody": {
           "description": "Body of request for user registration",
@@ -92,9 +82,7 @@
     },
     "/api/auth/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "login user",
         "requestBody": {
           "content": {
@@ -137,9 +125,7 @@
     },
     "/api/auth/logout": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "logout user (requires authentication token)",
         "parameters": [],
         "security": [
@@ -172,9 +158,7 @@
     },
     "/api/users/current": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "get user information (requires authentication token)",
         "parameters": [],
         "security": [
@@ -214,9 +198,7 @@
     },
     "/api/users/balance": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "get user balance (requires authentication token)",
         "parameters": [],
         "security": [
@@ -256,9 +238,7 @@
     },
     "/api/categories": {
       "get": {
-        "tags": [
-          "Categories"
-        ],
+        "tags": ["Categories"],
         "summary": "get transaction categories",
         "responses": {
           "200": {
@@ -290,9 +270,7 @@
     },
     "/api/transactions": {
       "get": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "User's transactions",
         "parameters": [],
         "security": [
@@ -317,9 +295,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Transactions"
-        ],
+        "tags": ["Transactions"],
         "summary": "User's transactions",
         "parameters": [],
         "security": [
@@ -384,11 +360,7 @@
       },
       "User-registration-request": {
         "type": "object",
-        "required": [
-          "email",
-          "password",
-          "name"
-        ],
+        "required": ["email", "password", "name"],
         "properties": {
           "email": {
             "type": "string",
@@ -410,10 +382,23 @@
       "User-registration-response": {
         "type": "object",
         "properties": {
-          "email": {
+          "token": {
             "type": "string",
-            "description": "User's email",
-            "example": "mango@gmail.com"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDhjMzliNmU1MmQ1MWFlZWFiY2MzMyIsImlhdCI6MTY0ODkzNzY1OSwiZXhwIjoxNjQ5MDI0MDU5fQ.R_xVuzsK9Nzs9sj98Lk1lidJB27xDUjhYBOiPU-_fmY"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "example": "mango@gmail.com"
+              },
+              "name": {
+                "type": "string",
+                "example": "Mango"
+              }
+            }
           },
           "name": {
             "type": "string",
@@ -482,17 +467,14 @@
             "example": "Mango"
           },
           "balance": {
-            "type":"number",
-          "example": 0.00
+            "type": "number",
+            "example": 0.0
           }
         }
       },
       "Transactions-request": {
         "type": "object",
-        "required": [
-          "date",
-          "amount"
-        ],
+        "required": ["date", "amount"],
         "properties": {
           "date": {
             "type": "string",
@@ -616,10 +598,7 @@
   },
   "definitions": {
     "Pet": {
-      "required": [
-        "id",
-        "name"
-      ],
+      "required": ["id", "name"],
       "properties": {
         "id": {
           "type": "integer",
