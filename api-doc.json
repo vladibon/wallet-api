@@ -253,17 +253,22 @@
       "User-registration-respons": {
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string",
-            "example": "mango@gmail.com"
-          },
-          "name": {
-            "type": "string",
-            "example": "Mango"
-          },
           "token": {
             "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNGIwZTgxNGFjNjEwNTkyNDM0NDRkNyIsImlhdCI6MTY0OTA4NjA4MSwiZXhwIjoxNjQ5MTcyNDgxfQ.6W2lAm1N3VC_ZM2EmiWLIMzC32E1Zs7m5SF9X55tFDc"
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDhjMzliNmU1MmQ1MWFlZWFiY2MzMyIsImlhdCI6MTY0ODkzNzY1OSwiZXhwIjoxNjQ5MDI0MDU5fQ.R_xVuzsK9Nzs9sj98Lk1lidJB27xDUjhYBOiPU-_fmY"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "example": "mango@gmail.com"
+              },
+              "name": {
+                "type": "string",
+                "example": "Mango"
+              }
+            }
           }
         }
       },

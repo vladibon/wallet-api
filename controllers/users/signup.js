@@ -17,10 +17,10 @@ const signup = async (req, res) => {
   // await sendEmail(email, user.verificationToken);
 
   res.status(201).json({
+    token: user.token,
     user: {
       email: user.email,
       name: user.name,
-      token: user.token,
     },
   });
 };
