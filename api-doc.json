@@ -11,7 +11,14 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [{}],
+  "servers": [
+    {
+      "url": "https://wallet-proj.herokuapp.com/"
+    },
+    {
+      "url": "http://localhost:4000/"
+    }
+  ],
   "tags": [
     {
       "name": "Auth",
@@ -330,6 +337,44 @@
           }
         }
       }
+    },
+    "/api/transactions/stats": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "User's transactions statistic (requires authentication token)",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Body of request for user statistic",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transactions-stats-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User's Transactions statistics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transactions-stats-response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -443,19 +488,6 @@
         }
       },
       "User-current-response": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "example": "mango@gmail.com"
-          },
-          "name": {
-            "type": "string",
-            "example": "Mango"
-          }
-        }
-      },
-      "User-balance-response": {
         "type": "object",
         "properties": {
           "email": {
@@ -584,6 +616,54 @@
             },
             "createdAt": "2022-04-04T07:48:24.034Z",
             "updatedAt": "2022-04-04T07:48:24.034Z"
+          }
+        ]
+      },
+      "Transactions-stats-request": {
+        "type": "object",
+        "required": ["begin", "end"],
+        "properties": {
+          "begin": {
+            "type": "string",
+            "description": "Date of period begin",
+            "example": "01/01/2022"
+          },
+          "end": {
+            "type": "string",
+            "description": "Date of period end",
+            "example": "12/01/2022"
+          }
+        }
+      },
+      "Transactions-stats-response": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "string",
+              "description": "Category",
+              "example": "add"
+            },
+            "totalSum": {
+              "type": "number",
+              "description": "Total sum of the current category",
+              "example": 0
+            }
+          }
+        },
+        "example": [
+          {
+            "category": "add2",
+            "totalSum": 3600
+          },
+          {
+            "category": "add8",
+            "totalSum": 2000
+          },
+          {
+            "category": "add15",
+            "totalSum": 1600
           }
         ]
       }
