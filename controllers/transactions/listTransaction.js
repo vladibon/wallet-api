@@ -11,10 +11,9 @@ const listTransaction = async (req, res) => {
 
   const skip = (page - 1) * limit;
 
-  const transactions = await Transaction.find(filter, { owner: 0 }, { skip, limit }).populate(
-    'owner',
-    'email',
-  );
+  const transactions = await Transaction.find(filter, { owner: 0 }, { skip, limit }).sort({
+    createdAt: -1,
+  });
 
   const result = { transactions, balance, page };
 

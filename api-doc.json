@@ -680,10 +680,6 @@
               "comment": "",
               "amount": 700,
               "balance": 700,
-              "owner": {
-                "_id": "624963910b1fdc35f4c103ae",
-                "email": "Michael.Paukov@gmail.com"
-              },
               "createdAt": "2022-04-04T07:48:16.807Z",
               "updatedAt": "2022-04-04T07:48:16.807Z"
             },

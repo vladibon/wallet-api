@@ -16,11 +16,9 @@ const addTransaction = async (req, res) => {
 
   const skip = 0;
   const limit = 8;
-  const transactions = await Transaction.find(
-    { owner: _id },
-    { owner: 0 },
-    { skip, limit },
-  ).populate('owner', 'email');
+  const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({
+    createdAt: -1,
+  });
   const result = { transactions, balance: user.balance, page: 1 };
   res.status(201).json(result);
 };
