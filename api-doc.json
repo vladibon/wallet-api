@@ -9,8 +9,12 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "servers": [
     {
       "url": "https://wallet-proj.herokuapp.com/"
@@ -37,11 +41,15 @@
       "description": "Transactions endpoint"
     }
   ],
-  "schemes": ["http"],
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/api/auth/signup": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "User Registration",
         "requestBody": {
           "description": "Body of request for user registration",
@@ -89,7 +97,9 @@
     },
     "/api/auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "login user",
         "requestBody": {
           "content": {
@@ -132,7 +142,9 @@
     },
     "/api/auth/logout": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "logout user (requires authentication token)",
         "parameters": [],
         "security": [
@@ -165,7 +177,9 @@
     },
     "/api/users/current": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "get user information (requires authentication token)",
         "parameters": [],
         "security": [
@@ -203,10 +217,11 @@
         }
       }
     },
-
     "/api/categories": {
       "get": {
-        "tags": ["Categories"],
+        "tags": [
+          "Categories"
+        ],
         "summary": "get transaction categories",
         "responses": {
           "200": {
@@ -238,7 +253,9 @@
     },
     "/api/transactions": {
       "get": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Get user's transactions (requires authentication token)",
         "parameters": [],
         "security": [
@@ -252,7 +269,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Transactions-response"
+                  "$ref": "#/components/schemas/Transactions-list-response"
                 }
               }
             }
@@ -263,7 +280,9 @@
         }
       },
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Post user's transaction (requires authentication token)",
         "parameters": [],
         "security": [
@@ -301,7 +320,9 @@
     },
     "/api/transactions/stats": {
       "get": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Get user's transactions statistic (requires authentication token)",
         "parameters": [],
         "security": [
@@ -366,7 +387,11 @@
       },
       "User-registration-request": {
         "type": "object",
-        "required": ["email", "password", "name"],
+        "required": [
+          "email",
+          "password",
+          "name"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -468,9 +493,120 @@
           }
         }
       },
+      "Transactions-list-response": {
+        "type": "object",
+        "properties": {
+          "transactions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Transaction id",
+                  "example": "624aa2c0f3a2ee5f009b105d"
+                },
+                "date": {
+                  "type": "string",
+                  "description": "Date of transaction",
+                  "example": "2022-01-03T23:00:00.000Z"
+                },
+                "type": {
+                  "type": "boolean",
+                  "description": "Deposit or withdraw",
+                  "example": true
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Category",
+                  "example": "add"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "amount",
+                  "example": 700
+                },
+                "owner": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "User's Id",
+                      "example": "624963910b1fdc35f4c103ae"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "mango@gmail.com"
+                    }
+                  }
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "Date of creation",
+                  "example": "2022-01-03T23:00:00.000Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "description": "Date of modification",
+                  "example": "2022-01-03T23:00:00.000Z"
+                }
+              }
+            }
+          },
+          "balance": {
+            "type": "number",
+            "description":"Balance from User.balance",
+            "example": 0
+          },
+          "page": {
+            "type": "number",
+            "description":"Page for pagination",
+            "example": 1
+          }
+        },
+        "example": {
+          "transactions": [
+            {
+              "_id": "624aa2c0f3a2ee5f009b105d",
+              "date": "2022-01-03T23:00:00.000Z",
+              "type": true,
+              "category": "add1",
+              "comment": "",
+              "amount": 700,
+              "balance": 700,
+              "owner": {
+                "_id": "624963910b1fdc35f4c103ae",
+                "email": "Michael.Paukov@gmail.com"
+              },
+              "createdAt": "2022-04-04T07:48:16.807Z",
+              "updatedAt": "2022-04-04T07:48:16.807Z"
+            },
+            {
+              "_id": "624aa2c8f3a2ee5f009b1061",
+              "date": "2022-02-03T23:00:00.000Z",
+              "type": true,
+              "category": "add2",
+              "comment": "",
+              "amount": 700,
+              "balance": 1400,
+              "owner": {
+                "_id": "624963910b1fdc35f4c103ae",
+                "email": "Michael.Paukov@gmail.com"
+              },
+              "createdAt": "2022-04-04T07:48:24.034Z",
+              "updatedAt": "2022-04-04T07:48:24.034Z"
+            }
+          ],
+          "balance": 1400,
+          "page": 1
+        }
+      },
       "Transactions-request": {
         "type": "object",
-        "required": ["date", "amount"],
+        "required": [
+          "date",
+          "amount"
+        ],
         "properties": {
           "date": {
             "type": "string",
@@ -498,95 +634,6 @@
             "example": 700
           }
         }
-      },
-      "Transactions-response": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "Transaction id",
-              "example": "624aa2c0f3a2ee5f009b105d"
-            },
-            "date": {
-              "type": "string",
-              "description": "Date of transaction",
-              "example": "2022-01-03T23:00:00.000Z"
-            },
-            "type": {
-              "type": "boolean",
-              "description": "Deposit or withdraw",
-              "example": true
-            },
-            "category": {
-              "type": "string",
-              "description": "Category",
-              "example": "add"
-            },
-            "amount": {
-              "type": "number",
-              "description": "amount",
-              "example": 700
-            },
-            "owner": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "description": "User's Id",
-                  "example": "624963910b1fdc35f4c103ae"
-                },
-                "email": {
-                  "type": "string",
-                  "example": "mango@gmail.com"
-                }
-              }
-            },
-            "createdAt": {
-              "type": "string",
-              "description": "Date of creation",
-              "example": "2022-01-03T23:00:00.000Z"
-            },
-            "updatedAt": {
-              "type": "string",
-              "description": "Date of modification",
-              "example": "2022-01-03T23:00:00.000Z"
-            }
-          }
-        },
-        "example": [
-          {
-            "_id": "624aa2c0f3a2ee5f009b105d",
-            "date": "2022-01-03T23:00:00.000Z",
-            "type": true,
-            "category": "add1",
-            "comment": "",
-            "amount": 700,
-            "balance": 700,
-            "owner": {
-              "_id": "624963910b1fdc35f4c103ae",
-              "email": "Michael.Paukov@gmail.com"
-            },
-            "createdAt": "2022-04-04T07:48:16.807Z",
-            "updatedAt": "2022-04-04T07:48:16.807Z"
-          },
-          {
-            "_id": "624aa2c8f3a2ee5f009b1061",
-            "date": "2022-02-03T23:00:00.000Z",
-            "type": true,
-            "category": "add2",
-            "comment": "",
-            "amount": 700,
-            "balance": 1400,
-            "owner": {
-              "_id": "624963910b1fdc35f4c103ae",
-              "email": "Michael.Paukov@gmail.com"
-            },
-            "createdAt": "2022-04-04T07:48:24.034Z",
-            "updatedAt": "2022-04-04T07:48:24.034Z"
-          }
-        ]
       },
       "Transaction-response": {
         "type": "object",
@@ -659,7 +706,10 @@
       },
       "Transactions-stats-request": {
         "type": "object",
-        "required": ["begin", "end"],
+        "required": [
+          "begin",
+          "end"
+        ],
         "properties": {
           "begin": {
             "type": "string",
@@ -716,7 +766,10 @@
   },
   "definitions": {
     "Pet": {
-      "required": ["id", "name"],
+      "required": [
+        "id",
+        "name"
+      ],
       "properties": {
         "id": {
           "type": "integer",
