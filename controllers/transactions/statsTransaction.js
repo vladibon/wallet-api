@@ -2,13 +2,13 @@ const { Transaction } = require('../../models');
 
 const statsTransaction = async (req, res) => {
   const { _id } = req.user;
-  const { begin, end } = req.body;
+  const { begin, end, type } = req.body;
 
   const result = await Transaction.aggregate([
     {
       $match: {
         owner: _id,
-        type: true,
+        type: type,
         date: {
           $gte: new Date(begin), // тут указываете с какого числа месяца
           $lte: new Date(end), // по какое число месяца.
