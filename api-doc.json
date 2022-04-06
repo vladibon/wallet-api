@@ -519,26 +519,12 @@
                 "category": {
                   "type": "string",
                   "description": "Category",
-                  "example": "add"
+                  "example": "Car"
                 },
                 "amount": {
                   "type": "number",
                   "description": "amount",
                   "example": 700
-                },
-                "owner": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string",
-                      "description": "User's Id",
-                      "example": "624963910b1fdc35f4c103ae"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "mango@gmail.com"
-                    }
-                  }
                 },
                 "createdAt": {
                   "type": "string",
@@ -555,12 +541,12 @@
           },
           "balance": {
             "type": "number",
-            "description":"Balance from User.balance",
+            "description": "Balance from User.balance",
             "example": 0
           },
           "page": {
             "type": "number",
-            "description":"Page for pagination",
+            "description": "Page for pagination",
             "example": 1
           }
         },
@@ -570,14 +556,10 @@
               "_id": "624aa2c0f3a2ee5f009b105d",
               "date": "2022-01-03T23:00:00.000Z",
               "type": true,
-              "category": "add1",
+              "category": "Car",
               "comment": "",
               "amount": 700,
               "balance": 700,
-              "owner": {
-                "_id": "624963910b1fdc35f4c103ae",
-                "email": "Michael.Paukov@gmail.com"
-              },
               "createdAt": "2022-04-04T07:48:16.807Z",
               "updatedAt": "2022-04-04T07:48:16.807Z"
             },
@@ -585,14 +567,10 @@
               "_id": "624aa2c8f3a2ee5f009b1061",
               "date": "2022-02-03T23:00:00.000Z",
               "type": true,
-              "category": "add2",
+              "category": "Food",
               "comment": "",
               "amount": 700,
               "balance": 1400,
-              "owner": {
-                "_id": "624963910b1fdc35f4c103ae",
-                "email": "Michael.Paukov@gmail.com"
-              },
               "createdAt": "2022-04-04T07:48:24.034Z",
               "updatedAt": "2022-04-04T07:48:24.034Z"
             }
@@ -621,7 +599,7 @@
           "category": {
             "type": "string",
             "description": "Category",
-            "example": "add"
+            "example": "Food"
           },
           "comment": {
             "type": "string",
@@ -638,70 +616,91 @@
       "Transaction-response": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string",
-            "description": "Transaction id",
-            "example": "624aa2c0f3a2ee5f009b105d"
-          },
-          "date": {
-            "type": "string",
-            "description": "Date of transaction",
-            "example": "2022-01-03T23:00:00.000Z"
-          },
-          "type": {
-            "type": "boolean",
-            "description": "Deposit or withdraw",
-            "example": true
-          },
-          "category": {
-            "type": "string",
-            "description": "Category",
-            "example": "add"
-          },
-          "amount": {
-            "type": "number",
-            "description": "amount",
-            "example": 700
-          },
-          "owner": {
-            "type": "object",
-            "properties": {
-              "_id": {
-                "type": "string",
-                "description": "User's Id",
-                "example": "624963910b1fdc35f4c103ae"
-              },
-              "email": {
-                "type": "string",
-                "example": "mango@gmail.com"
+          "transactions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Transaction id",
+                  "example": "624aa2c0f3a2ee5f009b105d"
+                },
+                "date": {
+                  "type": "string",
+                  "description": "Date of transaction",
+                  "example": "2022-01-03T23:00:00.000Z"
+                },
+                "type": {
+                  "type": "boolean",
+                  "description": "Deposit or withdraw",
+                  "example": true
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Category",
+                  "example": "Car"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "amount",
+                  "example": 700
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "Date of creation",
+                  "example": "2022-01-03T23:00:00.000Z"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "description": "Date of modification",
+                  "example": "2022-01-03T23:00:00.000Z"
+                }
               }
             }
           },
-          "createdAt": {
-            "type": "string",
-            "description": "Date of creation",
-            "example": "2022-01-03T23:00:00.000Z"
+          "balance": {
+            "type": "number",
+            "description": "Balance from User.balance",
+            "example": 0
           },
-          "updatedAt": {
-            "type": "string",
-            "description": "Date of modification",
-            "example": "2022-01-03T23:00:00.000Z"
+          "page": {
+            "type": "number",
+            "description": "Page for pagination",
+            "example": 1
           }
         },
         "example": {
-          "_id": "624aa2c0f3a2ee5f009b105d",
-          "date": "2022-01-03T23:00:00.000Z",
-          "type": true,
-          "category": "add1",
-          "comment": "",
-          "amount": 700,
-          "balance": 700,
-          "owner": {
-            "_id": "624963910b1fdc35f4c103ae",
-            "email": "Michael.Paukov@gmail.com"
-          },
-          "createdAt": "2022-04-04T07:48:16.807Z",
-          "updatedAt": "2022-04-04T07:48:16.807Z"
+          "transactions": [
+            {
+              "_id": "624aa2c0f3a2ee5f009b105d",
+              "date": "2022-01-03T23:00:00.000Z",
+              "type": true,
+              "category": "Car",
+              "comment": "",
+              "amount": 700,
+              "balance": 700,
+              "owner": {
+                "_id": "624963910b1fdc35f4c103ae",
+                "email": "Michael.Paukov@gmail.com"
+              },
+              "createdAt": "2022-04-04T07:48:16.807Z",
+              "updatedAt": "2022-04-04T07:48:16.807Z"
+            },
+            {
+              "_id": "624aa2c8f3a2ee5f009b1061",
+              "date": "2022-02-03T23:00:00.000Z",
+              "type": true,
+              "category": "Food",
+              "comment": "",
+              "amount": 700,
+              "balance": 1400,
+              "createdAt": "2022-04-04T07:48:24.034Z",
+              "updatedAt": "2022-04-04T07:48:24.034Z"
+            }
+          ],
+          "balance": 1400,
+          "page": 1
         }
       },
       "Transactions-stats-request": {
@@ -737,7 +736,7 @@
             "category": {
               "type": "string",
               "description": "Category",
-              "example": "add"
+              "example": "Car"
             },
             "totalSum": {
               "type": "number",
@@ -748,15 +747,15 @@
         },
         "example": [
           {
-            "category": "add2",
+            "category": "Food",
             "totalSum": 3600
           },
           {
-            "category": "add8",
+            "category": "Car",
             "totalSum": 2000
           },
           {
-            "category": "add15",
+            "category": "Education",
             "totalSum": 1600
           }
         ]
