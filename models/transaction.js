@@ -19,6 +19,7 @@ const transactionSchema = Schema(
     },
     comment: {
       type: String,
+      default: '',
     },
     amount: {
       type: Number,
