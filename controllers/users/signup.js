@@ -21,6 +21,7 @@ const signup = async (req, res) => {
     user: {
       email: user.email,
       name: user.name,
+      balance: user.balance,
     },
   });
 };

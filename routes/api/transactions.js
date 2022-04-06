@@ -10,7 +10,7 @@ router.get('/', auth, ctrlWrapper(ctrl.listTransactions));
 
 router.post('/', [auth, validation(schemas.add)], ctrlWrapper(ctrl.addTransaction));
 
-router.post('/stats', auth, ctrlWrapper(ctrl.statsTransactions));
+router.get('/stats', auth, ctrlWrapper(ctrl.statsTransactions));
 
 // router.get('/:contactId', auth, ctrlWrapper(ctrl.getContactById));
 

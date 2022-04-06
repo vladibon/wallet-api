@@ -203,46 +203,7 @@
         }
       }
     },
-    "/api/users/balance": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "get user balance (requires authentication token)",
-        "parameters": [],
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns user information",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User-balance-response"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "User unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Not authorized"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
+
     "/api/categories": {
       "get": {
         "tags": ["Categories"],
@@ -278,7 +239,7 @@
     "/api/transactions": {
       "get": {
         "tags": ["Transactions"],
-        "summary": "User's transactions",
+        "summary": "Get user's transactions (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -287,7 +248,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User's Transactions",
+            "description": "Get user's transactions",
             "content": {
               "application/json": {
                 "schema": {
@@ -303,7 +264,7 @@
       },
       "post": {
         "tags": ["Transactions"],
-        "summary": "User's transactions",
+        "summary": "Post user's transaction (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -311,7 +272,7 @@
           }
         ],
         "requestBody": {
-          "description": "Body of request for user transactions",
+          "description": "Body of request for post user's transaction",
           "required": true,
           "content": {
             "application/json": {
@@ -327,7 +288,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Transactions-response"
+                  "$ref": "#/components/schemas/Transaction-response"
                 }
               }
             }
@@ -341,7 +302,7 @@
     "/api/transactions/stats": {
       "get": {
         "tags": ["Transactions"],
-        "summary": "User's transactions statistic (requires authentication token)",
+        "summary": "Get user's transactions statistic (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -349,7 +310,7 @@
           }
         ],
         "requestBody": {
-          "description": "Body of request for user statistic",
+          "description": "Body of request for get user's transactions statistic",
           "required": true,
           "content": {
             "application/json": {
@@ -442,13 +403,12 @@
               "name": {
                 "type": "string",
                 "example": "Mango"
+              },
+              "balance": {
+                "type": "Number",
+                "example": "0"
               }
             }
-          },
-          "name": {
-            "type": "string",
-            "description": "User's name",
-            "example": "Mango"
           }
         }
       },
@@ -482,6 +442,10 @@
               "name": {
                 "type": "string",
                 "example": "Mango"
+              },
+              "balance": {
+                "type": "Number",
+                "example": "0"
               }
             }
           }
@@ -523,9 +487,14 @@
             "description": "Category",
             "example": "add"
           },
+          "comment": {
+            "type": "string",
+            "description": "Comment",
+            "example": "About a transactions"
+          },
           "amount": {
             "type": "number",
-            "description": "amount",
+            "description": "Amount",
             "example": 700
           }
         }
@@ -618,6 +587,75 @@
             "updatedAt": "2022-04-04T07:48:24.034Z"
           }
         ]
+      },
+      "Transaction-response": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Transaction id",
+            "example": "624aa2c0f3a2ee5f009b105d"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of transaction",
+            "example": "2022-01-03T23:00:00.000Z"
+          },
+          "type": {
+            "type": "boolean",
+            "description": "Deposit or withdraw",
+            "example": true
+          },
+          "category": {
+            "type": "string",
+            "description": "Category",
+            "example": "add"
+          },
+          "amount": {
+            "type": "number",
+            "description": "amount",
+            "example": 700
+          },
+          "owner": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "User's Id",
+                "example": "624963910b1fdc35f4c103ae"
+              },
+              "email": {
+                "type": "string",
+                "example": "mango@gmail.com"
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date of creation",
+            "example": "2022-01-03T23:00:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date of modification",
+            "example": "2022-01-03T23:00:00.000Z"
+          }
+        },
+        "example": {
+          "_id": "624aa2c0f3a2ee5f009b105d",
+          "date": "2022-01-03T23:00:00.000Z",
+          "type": true,
+          "category": "add1",
+          "comment": "",
+          "amount": 700,
+          "balance": 700,
+          "owner": {
+            "_id": "624963910b1fdc35f4c103ae",
+            "email": "Michael.Paukov@gmail.com"
+          },
+          "createdAt": "2022-04-04T07:48:16.807Z",
+          "updatedAt": "2022-04-04T07:48:16.807Z"
+        }
       },
       "Transactions-stats-request": {
         "type": "object",

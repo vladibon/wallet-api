@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { nanoid } = require('nanoid');
+// const { nanoid } = require('nanoid');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
@@ -34,6 +34,10 @@ const userSchema = Schema(
       type: String,
       required: [true, 'Name is required'],
     },
+    balance: {
+      type: Number,
+      default: 0,
+    },
   },
   { versionKey: false, timestamps: true },
 );
@@ -47,16 +51,16 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-userSchema.methods.setVerificationToken = function (password) {
-  this.verificationToken = nanoid();
-  return this;
-};
+// userSchema.methods.setVerificationToken = function (password) {
+//   this.verificationToken = nanoid();
+//   return this;
+// };
 
-userSchema.methods.verifyEmail = function () {
-  this.verificationToken = null;
-  this.verify = true;
-  return this;
-};
+// userSchema.methods.verifyEmail = function () {
+//   this.verificationToken = null;
+//   this.verify = true;
+//   return this;
+// };
 
 // userSchema.methods.setAvatar = function () {
 //   this.avatarURL = gravatar.url(this.email);
@@ -65,6 +69,11 @@ userSchema.methods.verifyEmail = function () {
 
 userSchema.methods.setName = function (name) {
   this.name = name;
+  return this;
+};
+
+userSchema.methods.setBalance = function (balance) {
+  this.balance = balance;
   return this;
 };
 

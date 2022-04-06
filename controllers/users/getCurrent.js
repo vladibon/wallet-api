@@ -1,13 +1,5 @@
 const getCurrent = async (req, res) => {
-  const { Transaction } = require('../../models');
-
-  const { _id, email, name } = req.user;
-  const data = await Transaction.find({ owner: _id });
-  const sortedData = [...data].sort((a, b) => b.updatedAt - a.updatedAt);
-  if (data.length === 0) {
-    sortedData.push({ balance: 0 });
-  }
-  const balance = sortedData[0].balance;
+  const { email, name, balance } = req.user;
 
   res.json({ email, name, balance });
 };
