@@ -45,7 +45,7 @@ const joiAddSchema = Joi.object({
   date: Joi.date().required(),
   type: Joi.boolean(),
   category: Joi.string().valid(...allCategories),
-  comment: Joi.string(),
+  comment: Joi.string().min(0).max(40),
   amount: Joi.number().min(0.01).required(),
 });
 
