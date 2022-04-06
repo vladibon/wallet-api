@@ -1,15 +1,15 @@
 {
-  "income": ["Regular income", "Irregular income"],
+  "income": ["regular income", "irregular income"],
   "expense": [
-    "Basic expenses",
-    "Food",
-    "Car",
-    "Personal growth",
-    "Self care",
-    "Child care",
-    "Household products",
-    "Education",
-    "Leisure",
-    "Other expenses"
+    "basic expenses",
+    "food",
+    "car",
+    "personal growth",
+    "self care",
+    "child care",
+    "household products",
+    "education",
+    "leisure",
+    "other expenses"
   ]
 }
