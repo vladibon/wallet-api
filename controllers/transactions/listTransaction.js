@@ -8,16 +8,13 @@ const listTransaction = async (req, res) => {
   if (page < 1 || limit < 1) throw new BadRequest('Page and limit must be positive');
 
   const filter = { owner: _id };
-
   const skip = (page - 1) * limit;
 
   const transactions = await Transaction.find(filter, { owner: 0 }, { skip, limit }).sort({
     createdAt: -1,
   });
 
-  const result = { transactions, balance, page };
-
-  res.json(result);
+  res.json({ transactions, balance, page });
 };
 
 module.exports = listTransaction;
