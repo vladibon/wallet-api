@@ -360,6 +360,14 @@
           "name": {
             "type": "string",
             "example": "Mango"
+          },
+          "balance": {
+            "type": "number",
+            "example": "3000"
+          },
+          "totalTransactions": {
+            "type": "number",
+            "example": "200"
           }
         }
       },
@@ -673,56 +681,68 @@
       },
       "Transactions-stats-request": {
         "type": "object",
-        "required": ["begin", "end", "type"],
+        "required": ["month", "year"],
         "properties": {
-          "begin": {
+          "month": {
             "type": "string",
-            "description": "Date of period begin",
-            "example": "01/01/2022"
+            "description": "Index of month (0 - 11)",
+            "example": "6"
           },
-          "end": {
+          "year": {
             "type": "string",
-            "description": "Date of period end",
-            "example": "12/01/2022"
-          },
-          "type": {
-            "type": "boolean",
-            "description": "Type of operation. Deposit - true, withdraw - false",
-            "example": true
+            "description": "Year",
+            "example": "2022"
           }
         }
       },
       "Transactions-stats-response": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "category": {
-              "type": "string",
-              "description": "Category",
-              "example": "Car"
-            },
-            "totalSum": {
-              "type": "number",
-              "description": "Total sum of the current category",
-              "example": 0
+        "type": "object",
+        "properties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string",
+                "description": "Category",
+                "example": "Car"
+              },
+              "totalSum": {
+                "type": "number",
+                "description": "Total sum of the current category",
+                "example": 0
+              }
             }
           }
         },
-        "example": [
-          {
-            "category": "Food",
-            "totalSum": 3600
-          },
-          {
-            "category": "Car",
-            "totalSum": 2000
-          },
-          {
-            "category": "Education",
-            "totalSum": 1600
-          }
-        ]
+        "example": {
+          "income": [
+            {
+              "category": "regular income",
+              "sum": 3600
+            },
+            {
+              "category": "irregular income",
+              "sum": 2000
+            }
+          ],
+          "expense": [
+            {
+              "category": "Food",
+              "sum": 300
+            },
+            {
+              "category": "Car",
+              "sum": 200
+            },
+            {
+              "category": "Education",
+              "sum": 600
+            }
+          ],
+          "totalIncome": 5600,
+          "totalExpenses": 1100
+        }
       }
     },
     "securitySchemes": {
