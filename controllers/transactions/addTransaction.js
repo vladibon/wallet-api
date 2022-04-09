@@ -7,7 +7,7 @@ const addTransaction = async (req, res) => {
 
   const user = await User.findById(_id);
 
-  const balance = type ? user.balance + amount : user.balance - amount;
+  const balance = type ? user.balance + Number(amount) : user.balance - Number(amount);
 
   if (balance < 0) throw new BadRequest('Balance cannot be negative');
 
