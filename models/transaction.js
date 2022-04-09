@@ -1,6 +1,5 @@
-const Joi = require('joi');
 const { Schema, model } = require('mongoose');
-// const Joi = require('joi');
+const Joi = require('joi');
 const categories = require('../categories.json');
 const allCategories = [...categories.expense, ...categories.income];
 
@@ -13,7 +12,7 @@ const transactionSchema = Schema(
     type: {
       type: Boolean,
       default: false,
-      // true - deposite, false - withdraw
+      // true - income, false - expense
     },
     category: {
       type: String,

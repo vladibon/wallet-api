@@ -1,4 +1,4 @@
-const listTransactions = require('./listTransaction');
+const listTransactions = require('./listTransactions');
 const statsTransactions = require('./statsTransaction');
 const addTransaction = require('./addTransaction');
 

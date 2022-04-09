@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
-// const { nanoid } = require('nanoid');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
@@ -22,10 +21,6 @@ const userSchema = Schema(
       required: [true, 'Password is required'],
       minlength: 6,
     },
-    // verify: {
-    //   type: Boolean,
-    //   default: false,
-    // },
     token: {
       type: String,
       default: null,
@@ -38,7 +33,7 @@ const userSchema = Schema(
       type: Number,
       default: 0,
     },
-    totalPages: {
+    totalTransactions: {
       type: Number,
       default: 0,
     },
@@ -55,24 +50,13 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-// userSchema.methods.setVerificationToken = function (password) {
-//   this.verificationToken = nanoid();
-//   return this;
-// };
-
-// userSchema.methods.verifyEmail = function () {
-//   this.verificationToken = null;
-//   this.verify = true;
-//   return this;
-// };
-
-// userSchema.methods.setAvatar = function () {
-//   this.avatarURL = gravatar.url(this.email);
-//   return this;
-// };
-
 userSchema.methods.setName = function (name) {
   this.name = name;
+  return this;
+};
+
+userSchema.methods.setToken = function () {
+  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: '1d' });
   return this;
 };
 
@@ -81,9 +65,8 @@ userSchema.methods.setBalance = function (balance) {
   return this;
 };
 
-userSchema.methods.setToken = function () {
-  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: '1d' });
-
+userSchema.methods.incrementTotalTransactions = function () {
+  this.totalTransactions += 1;
   return this;
 };
 

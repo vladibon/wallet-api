@@ -11,7 +11,11 @@ const addTransaction = async (req, res) => {
 
   if (balance < 0) throw new BadRequest('Balance cannot be negative');
 
-  user.setBalance(Math.round(balance * 100) / 100).save();
+  user
+    .setBalance(Math.round(balance * 100) / 100)
+    .incrementTotalTransactions()
+    .save();
+
   await Transaction.create({
     ...req.body,
     owner: _id,
