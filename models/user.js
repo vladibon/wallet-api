@@ -82,7 +82,7 @@ userSchema.methods.setBalance = function (balance) {
 };
 
 userSchema.methods.setToken = function () {
-  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: '120s' });
+  this.token = jwt.sign({ id: this._id }, SECRET_KEY, { expiresIn: '1d' });
 
   return this;
 };
