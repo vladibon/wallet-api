@@ -9,7 +9,7 @@ const auth = async (req, _, next) => {
   const [bearer, token] = authorization.split(' ');
 
   try {
-    if (bearer !== 'Bearer' || !token) throw new Unauthorized('Not authorized');
+    if (bearer !== 'Bearer' || token === 'null') throw new Unauthorized('Not authorized');
 
     const { id } = jwt.verify(token, SECRET_KEY);
     const user = await User.findById(id);
