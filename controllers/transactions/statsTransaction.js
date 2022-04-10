@@ -10,8 +10,8 @@ const statsTransaction = async (req, res) => {
         owner: _id,
         type: true,
         date: {
-          $gte: new Date(`${month}/1/${year}`),
-          $lte: new Date(`${month}/31/${year}`),
+          $gte: new Date(`${Number(month) + 1}/1/${year}`),
+          $lte: new Date(`${Number(month) + 1}/31/${year}`),
         },
       },
     },
@@ -32,8 +32,8 @@ const statsTransaction = async (req, res) => {
         owner: _id,
         type: false,
         date: {
-          $gte: new Date(`${month}/1/${year}`),
-          $lte: new Date(`${month}/31/${year}`),
+          $gte: new Date(`${Number(month) + 1}/1/${year}`),
+          $lte: new Date(`${Number(month) + 1}/31/${year}`),
         },
       },
     },
