@@ -15,7 +15,7 @@ const listTransactions = async (req, res) => {
 
   const transactions = data.map(tr => ({
     ...tr._doc,
-    date: tr.createdAt.toLocaleString('en-GB').split('/').join('.').replace(',', ''), // .toLocaleDateString() - without time
+    date: tr.createdAt.toLocaleString('en-GB').split('/').join('.').replace(',', '').slice(0, 16), // .toLocaleDateString() - without time
   }));
 
   const totalPages = Math.ceil(totalTransactions / limit);
