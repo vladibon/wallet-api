@@ -2,7 +2,7 @@ const { Transaction } = require('../../models');
 
 const statsTransaction = async (req, res) => {
   const { _id } = req.user;
-  const { month, year } = req.body;
+  const { month, year } = req.query;
 
   const income = await Transaction.aggregate([
     {
