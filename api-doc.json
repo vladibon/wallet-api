@@ -491,7 +491,7 @@
                 "date": {
                   "type": "string",
                   "description": "Date of transaction",
-                  "example": "2022-01-03T23:00:00.000Z"
+                  "example": "03.01.2022"
                 },
                 "type": {
                   "type": "boolean",
@@ -536,7 +536,7 @@
           "transactions": [
             {
               "_id": "624aa2c0f3a2ee5f009b105d",
-              "date": "2022-01-03T23:00:00.000Z",
+              "date": "04.04.2022",
               "type": true,
               "category": "Car",
               "comment": "",
@@ -547,7 +547,7 @@
             },
             {
               "_id": "624aa2c8f3a2ee5f009b1061",
-              "date": "2022-02-03T23:00:00.000Z",
+              "date": "04.04.2022",
               "type": true,
               "category": "Food",
               "comment": "",

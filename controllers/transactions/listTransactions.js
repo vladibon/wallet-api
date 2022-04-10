@@ -9,9 +9,14 @@ const listTransactions = async (req, res) => {
 
   const skip = (page - 1) * limit;
 
-  const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({
+  const data = await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({
     createdAt: -1,
   });
+
+  const transactions = data.map(tr => ({
+    ...tr._doc,
+    date: tr.date.toLocaleDateString('en-GB').split('/').join('.'),
+  }));
 
   const totalPages = Math.ceil(totalTransactions / limit);
 
