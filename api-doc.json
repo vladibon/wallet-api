@@ -536,7 +536,7 @@
           "transactions": [
             {
               "_id": "624aa2c0f3a2ee5f009b105d",
-              "date": "04.04.2022",
+              "date": "04.04.2022 07:48",
               "type": true,
               "category": "Car",
               "comment": "",
@@ -547,7 +547,7 @@
             },
             {
               "_id": "624aa2c8f3a2ee5f009b1061",
-              "date": "04.04.2022",
+              "date": "04.04.2022 07:48",
               "type": true,
               "category": "Food",
               "comment": "",
@@ -654,7 +654,7 @@
           "transactions": [
             {
               "_id": "624aa2c0f3a2ee5f009b105d",
-              "date": "2022-01-03T23:00:00.000Z",
+              "date": "04.04.2022 07:48",
               "type": true,
               "category": "Car",
               "comment": "",
@@ -665,7 +665,7 @@
             },
             {
               "_id": "624aa2c8f3a2ee5f009b1061",
-              "date": "2022-02-03T23:00:00.000Z",
+              "date": "04.04.2022 07:48",
               "type": true,
               "category": "Food",
               "comment": "",
@@ -676,7 +676,8 @@
             }
           ],
           "balance": 1400,
-          "page": 1
+          "page": 1,
+          "totalPages": 1
         }
       },
       "Transactions-stats-request": {

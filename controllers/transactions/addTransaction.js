@@ -1,9 +1,11 @@
 const { BadRequest } = require('http-errors');
 const { Transaction, User } = require('../../models');
+const { formatDate } = require('./formatDate');
 
 const addTransaction = async (req, res) => {
   const { _id } = req.user;
   const { amount, type } = req.body;
+  const limit = 8;
 
   const user = await User.findById(_id);
 
@@ -22,11 +24,15 @@ const addTransaction = async (req, res) => {
     balance: user.balance,
   });
 
-  const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { limit: 8 }).sort({
-    createdAt: -1,
-  });
+  const transactions = formatDate(
+    await Transaction.find({ owner: _id }, { owner: 0 }, { limit }).sort({
+      createdAt: -1,
+    }),
+  );
 
-  res.status(201).json({ transactions, balance: user.balance, page: 1 });
+  const totalPages = Math.ceil(user.totalTransactions / limit);
+
+  res.status(201).json({ transactions, balance: user.balance, page: 1, totalPages });
 };
 
 module.exports = addTransaction;

@@ -1,5 +1,6 @@
 const { BadRequest } = require('http-errors');
 const { Transaction } = require('../../models');
+const { formatDate } = require('./formatDate');
 
 const listTransactions = async (req, res) => {
   const { _id, balance, totalTransactions } = req.user;
@@ -9,14 +10,9 @@ const listTransactions = async (req, res) => {
 
   const skip = (page - 1) * limit;
 
-  const data = await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({
-    createdAt: -1,
-  });
-
-  const transactions = data.map(tr => ({
-    ...tr._doc,
-    date: tr.createdAt.toLocaleString('en-GB').split('/').join('.').replace(',', '').slice(0, 16), // .toLocaleDateString() - without time
-  }));
+  const transactions = formatDate(
+    await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({ createdAt: -1 }),
+  );
 
   const totalPages = Math.ceil(totalTransactions / limit);
 
