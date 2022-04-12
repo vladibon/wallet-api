@@ -1,9 +1,9 @@
 # Wallet app API:
 
-- Web Server for the [Wallet app](https://github.com/vladibon/wallet); Team project, developed by
-  Go-IT students
+Web Server for the [Wallet app](https://github.com/vladibon/wallet); Team project, developed by
+Go-IT students
 
-### Technical tools
+## Technical tools
 
 - Express;
 - Mongoose;
