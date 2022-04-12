@@ -9,14 +9,9 @@ const addTransaction = async (req, res) => {
 
   const user = await User.findById(_id);
 
-  const balance = type ? user.balance + Number(amount) : user.balance - Number(amount);
+  const balanceCheck = type ? user.balance + Number(amount) : user.balance - Number(amount);
 
-  if (balance < 0) throw new BadRequest('Balance cannot be negative');
-
-  user
-    .setBalance(Math.round(balance * 100) / 100)
-    .incrementTotalTransactions()
-    .save();
+  if (balanceCheck < 0) throw new BadRequest('Balance cannot be negative');
 
   await Transaction.create({
     ...req.body,
@@ -24,15 +19,41 @@ const addTransaction = async (req, res) => {
     balance: user.balance,
   });
 
-  const transactions = formatDate(
-    await Transaction.find({ owner: _id }, { owner: 0 }, { limit }).sort({
-      createdAt: -1,
-    }),
-  );
+  let balance = 0;
+
+  user
+    // .setBalance(Math.round(balance * 100) / 100)
+    .incrementTotalTransactions()
+    .save();
+
+  const transactions = await Transaction.find({ owner: _id });
+
+  const sortedTransaction = transactions.slice().sort((a, b) => {
+    const at = a.date.getTime();
+    const bt = b.date.getTime();
+
+    return at - bt;
+  });
+
+  for (let i = 0; i < sortedTransaction.length; i++) {
+    if (sortedTransaction[i].type) {
+      balance += sortedTransaction[i].amount;
+    }
+
+    if (!sortedTransaction[i].type) {
+      balance -= sortedTransaction[i].amount;
+    }
+
+    await Transaction.findByIdAndUpdate(sortedTransaction[i]._id, { balance });
+  }
+
+  await User.findByIdAndUpdate(_id, { balance: Math.round(balance * 100) / 100 });
 
   const totalPages = Math.ceil(user.totalTransactions / limit);
 
-  res.status(201).json({ transactions, balance: user.balance, page: 1, totalPages });
+  const formatedTransactions = formatDate(transactions);
+
+  res.status(201).json({ transactions: formatedTransactions, balance, page: 1, totalPages });
 };
 
 module.exports = addTransaction;
