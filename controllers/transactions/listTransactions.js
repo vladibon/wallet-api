@@ -10,22 +10,7 @@ const listTransactions = async (req, res) => {
 
   const skip = (page - 1) * limit;
 
-  // const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({
-  //   createdAt: -1,
-  // });
-
-  // const sortedTransaction = transactions.slice().sort((a, b) => {
-  //   const at = a.date.getTime();
-  //   const bt = b.date.getTime();
-
-  //   return bt - at;
-  // });
-
-  // const formatedTransactions = formatDate(transactions);
-  // const formatedTransactions = formatDate(sortedTransaction);
-
   const transactions = formatDate(
-    // await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({ createdAt: -1 }),
     await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({ date: -1 }),
   );
 

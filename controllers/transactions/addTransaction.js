@@ -21,10 +21,7 @@ const addTransaction = async (req, res) => {
 
   let balance = 0;
 
-  user
-    // .setBalance(Math.round(balance * 100) / 100)
-    .incrementTotalTransactions()
-    .save();
+  user.incrementTotalTransactions().save();
 
   const transactions = await Transaction.find({ owner: _id });
 
