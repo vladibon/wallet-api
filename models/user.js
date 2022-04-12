@@ -73,7 +73,7 @@ userSchema.methods.incrementTotalTransactions = function () {
 const signupJoiSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
-  name: Joi.string().min(3).max(10).required(),
+  name: Joi.string().min(1).max(12).required(),
 });
 
 const loginJoiSchema = Joi.object({
