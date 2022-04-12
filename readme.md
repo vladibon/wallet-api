@@ -3,18 +3,6 @@
 Web Server for the [Wallet app](https://github.com/vladibon/wallet); Team project, developed by
 Go-IT students
 
-## Technical tools
-
-- Express;
-- Mongoose;
-- CORS;
-- Jsonwebtoken;
-- Bcryptjs;
-- HTTR-errors;
-- Dotenv;
-- Joi;
-- Swagger Ui Express;
-
 ## Developers team
 
 - Team leader [Vladimir Bondar](https://github.com/vladibon);
