@@ -4,7 +4,7 @@ const statsTransaction = async (req, res) => {
   const { _id } = req.user;
   const { month, year } = req.query;
 
-  const incomeResponse = await Transaction.aggregate([
+  const incomeR = await Transaction.aggregate([
     {
       $match: {
         owner: _id,
@@ -26,7 +26,7 @@ const statsTransaction = async (req, res) => {
     },
   ]);
 
-  const expenseResponse = await Transaction.aggregate([
+  const expenseR = await Transaction.aggregate([
     {
       $match: {
         owner: _id,
@@ -48,23 +48,17 @@ const statsTransaction = async (req, res) => {
     },
   ]);
 
-  const totalIncome = incomeResponse.reduce(
-    (acc, { sum }) =>
-      (Math.round((Number(acc) + Number(sum) + Number.EPSILON) * 100) / 100).toFixed(2),
-    0,
-  );
-  const totalExpenses = expenseResponse.reduce((acc, { sum }) => {
-    console.log(acc);
-    return (Math.round((Number(acc) + Number(sum) + Number.EPSILON) * 100) / 100).toFixed(2);
-  }, 0);
+  const totalIncome = incomeR.reduce((acc, { sum }) => acc + sum, 0).toFixed(2);
+  const totalExpenses = expenseR.reduce((acc, { sum }) => acc + sum, 0).toFixed(2);
 
-  const income = incomeResponse.map(stat => {
-    stat.sum = (Math.round((Number(stat.sum) + Number.EPSILON) * 100) / 100).toFixed(2);
-    return stat;
+  const income = incomeR.map(sec => {
+    sec.sum = Number(sec.sum).toFixed(2);
+    return sec;
   });
-  const expense = expenseResponse.map(stat => {
-    stat.sum = (Math.round((Number(stat.sum) + Number.EPSILON) * 100) / 100).toFixed(2);
-    return stat;
+
+  const expense = expenseR.map(sec => {
+    sec.sum = Number(sec.sum).toFixed(2);
+    return sec;
   });
 
   res.json({ income, expense, totalIncome, totalExpenses });
