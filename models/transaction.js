@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
-const categories = require('../categories.json');
+const categories = require('../data/categories.json');
 const allCategories = [...categories.expense, ...categories.income];
 
 const transactionSchema = Schema(
