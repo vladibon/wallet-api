@@ -1,6 +1,5 @@
 const { BadRequest } = require('http-errors');
 const { Transaction, User } = require('../../models');
-const { formatDate } = require('./formatDate');
 
 const addTransaction = async (req, res) => {
   const { _id } = req.user;
@@ -24,11 +23,9 @@ const addTransaction = async (req, res) => {
     balance: user.balance,
   });
 
-  const transactions = formatDate(
-    await Transaction.find({ owner: _id }, { owner: 0 }, { limit }).sort({
-      createdAt: -1,
-    }),
-  );
+  const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { limit }).sort({
+    createdAt: -1,
+  });
 
   const totalPages = Math.ceil(user.totalTransactions / limit);
 
