@@ -11,6 +11,7 @@ const listTransactions = async (req, res) => {
 
   const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({
     date: -1,
+    createdAt: -1,
   });
 
   const totalPages = Math.ceil(totalTransactions / limit);

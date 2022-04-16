@@ -3,51 +3,36 @@ const { Transaction, User } = require('../../models');
 
 const addTransaction = async (req, res) => {
   const { _id } = req.user;
-  const { amount, type } = req.body;
+  const { date, type, amount } = req.body;
   const limit = 8;
 
   const user = await User.findById(_id);
 
-  const balanceCheck = type ? user.balance + Number(amount) : user.balance - Number(amount);
+  let balance = type ? user.balance + Number(amount) : user.balance - Number(amount);
 
-  if (balanceCheck < 0) throw new BadRequest('Balance cannot be negative');
+  if (balance < 0) throw new BadRequest('Balance cannot be negative');
 
-  await Transaction.create({
-    ...req.body,
-    owner: _id,
-    balance: user.balance,
+  await Transaction.create({ ...req.body, owner: _id });
+
+  const nextTransactions = await Transaction.find({ owner: _id, date: { $gte: date } }).sort({
+    date: -1,
+    createdAt: -1,
   });
 
-  let balance = 0;
+  for (let i = 0; i < nextTransactions.length; i += 1) {
+    await Transaction.findByIdAndUpdate(nextTransactions[i]._id, { balance });
 
-  user.incrementTotalTransactions().save();
-
-  const transactions = await Transaction.find({ owner: _id });
-
-  const sortedTransaction = transactions.slice().sort((a, b) => {
-    const at = a.date.getTime();
-    const bt = b.date.getTime();
-
-    return at - bt;
-  });
-
-  for (let i = 0; i < sortedTransaction.length; i++) {
-    if (sortedTransaction[i].type) {
-      balance += sortedTransaction[i].amount;
-    }
-
-    if (!sortedTransaction[i].type) {
-      balance -= sortedTransaction[i].amount;
-    }
-
-    await Transaction.findByIdAndUpdate(sortedTransaction[i]._id, { balance });
+    nextTransactions[i].type
+      ? (balance -= nextTransactions[i].amount)
+      : (balance += nextTransactions[i].amount);
   }
 
-  await User.findByIdAndUpdate(_id, { balance: Math.round(balance * 100) / 100 });
+  const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { limit }).sort({
+    date: -1,
+    createdAt: -1,
+  });
 
-  // const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { limit }).sort({
-  //   createdAt: -1,
-  // });
+  await User.findByIdAndUpdate(_id, { balance: Math.round(balance * 100) / 100 });
 
   const totalPages = Math.ceil(user.totalTransactions / limit);
 
