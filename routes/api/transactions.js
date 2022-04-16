@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', auth, ctrlWrapper(ctrl.listTransactions));
 router.post('/', [auth, validation(schemas.add)], ctrlWrapper(ctrl.addTransaction));
-router.delete('/', auth, ctrlWrapper(ctrl.removeTransactions));
+router.delete('/', ctrlWrapper(ctrl.removeTransactions));
 router.get('/stats', auth, ctrlWrapper(ctrl.statsTransactions));
 
 module.exports = router;
