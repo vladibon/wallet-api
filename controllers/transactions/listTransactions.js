@@ -10,6 +10,7 @@ const listTransactions = async (req, res) => {
   const skip = (page - 1) * limit;
 
   const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { skip, limit }).sort({
+    date: -1,
     createdAt: -1,
   });
 
