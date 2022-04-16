@@ -12,6 +12,11 @@ const addTransaction = async (req, res) => {
 
   if (balance < 0) throw new BadRequest('Balance cannot be negative');
 
+  user
+    .setBalance(Math.round(balance * 100) / 100)
+    .incrementTotalTransactions()
+    .save();
+
   await Transaction.create({ ...req.body, owner: _id });
 
   const nextTransactions = await Transaction.find({ owner: _id, date: { $gte: date } }).sort({
@@ -32,11 +37,9 @@ const addTransaction = async (req, res) => {
     createdAt: -1,
   });
 
-  await User.findByIdAndUpdate(_id, { balance: Math.round(balance * 100) / 100 });
-
   const totalPages = Math.ceil(user.totalTransactions / limit);
 
-  res.status(201).json({ transactions, balance, page: 1, totalPages });
+  res.status(201).json({ transactions, balance: user.balance, page: 1, totalPages });
 };
 
 module.exports = addTransaction;
