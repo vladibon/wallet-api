@@ -5,7 +5,7 @@ const addCategory = async (req, res) => {
   const { _id } = req.user;
   const { type, category } = req.body;
 
-  if (!type === undefined || !category)
+  if (type === undefined || !category)
     throw new BadRequest('Category type and name should be provided');
 
   const user = await User.findById(_id);

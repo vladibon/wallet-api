@@ -14,7 +14,7 @@ const signup = async (req, res) => {
       email: user.email,
       name: user.name,
       balance: user.balance,
-      categories: { ...user.categories },
+      categories: user.categories,
     },
   });
 };
