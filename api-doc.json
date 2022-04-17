@@ -296,6 +296,37 @@
             "description": "Unauthorized"
           }
         }
+      },
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete user's transactions (requires authentication token)",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete user's transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "10 transactions have been deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
       }
     },
     "/api/transactions/stats": {
