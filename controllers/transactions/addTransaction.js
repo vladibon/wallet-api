@@ -47,7 +47,12 @@ const addTransaction = async (req, res) => {
 
   const totalPages = Math.ceil(user.totalTransactions / limit);
 
-  res.status(201).json({ transactions, balance: user.balance, page: 1, totalPages });
+  res.status(201).json({
+    transactions,
+    balance: user.balance,
+    page: 1,
+    totalPages,
+  });
 };
 
 module.exports = addTransaction;

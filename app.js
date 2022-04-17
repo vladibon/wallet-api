@@ -5,7 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./api-doc.json');
 require('dotenv').config();
 
-const { authRouter, usersRouter, categoriesRouter, transactionsRouter } = require('./routes/api');
+const { authRouter, usersRouter, transactionsRouter } = require('./routes/api');
 const { errorHandler } = require('./middlewares');
 
 const app = express();
@@ -19,7 +19,6 @@ app.use(express.static('public'));
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/categories', categoriesRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use(errorHandler);
 

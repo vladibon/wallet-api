@@ -16,7 +16,12 @@ const listTransactions = async (req, res) => {
 
   const totalPages = Math.ceil(totalTransactions / limit);
 
-  res.json({ transactions, balance, page: Number(page), totalPages });
+  res.json({
+    transactions,
+    balance,
+    page: Number(page),
+    totalPages,
+  });
 };
 
 module.exports = listTransactions;

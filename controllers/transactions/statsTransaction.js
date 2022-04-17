@@ -61,7 +61,12 @@ const statsTransaction = async (req, res) => {
     return sec;
   });
 
-  res.json({ income, expense, totalIncome, totalExpenses });
+  res.json({
+    income,
+    expense,
+    totalIncome,
+    totalExpenses,
+  });
 };
 
 module.exports = statsTransaction;

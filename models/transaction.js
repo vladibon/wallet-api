@@ -1,7 +1,5 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
-const categories = require('../data/categories.json');
-const allCategories = [...categories.expense, ...categories.income];
 
 const transactionSchema = Schema(
   {
@@ -17,7 +15,6 @@ const transactionSchema = Schema(
     category: {
       type: String,
       required: [true, 'Should be a category'],
-      enum: allCategories,
     },
     comment: {
       type: String,
@@ -43,7 +40,7 @@ const transactionSchema = Schema(
 const joiAddSchema = Joi.object({
   date: Joi.date().required(),
   type: Joi.boolean(),
-  category: Joi.string().valid(...allCategories),
+  category: Joi.string(),
   comment: Joi.string().min(0).max(40),
   amount: Joi.number().min(0.01).required(),
 });
