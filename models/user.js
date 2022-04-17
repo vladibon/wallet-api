@@ -37,6 +37,24 @@ const userSchema = Schema(
       type: Number,
       default: 0,
     },
+    categories: {
+      income: { type: Array, default: ['regular income', 'irregular income'] },
+      expense: {
+        type: Array,
+        default: [
+          'basic expenses',
+          'food',
+          'car',
+          'personal growth',
+          'self care',
+          'child care',
+          'household products',
+          'education',
+          'leisure',
+          'other expenses',
+        ],
+      },
+    },
   },
   { versionKey: false, timestamps: true },
 );
