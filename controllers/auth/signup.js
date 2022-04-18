@@ -6,7 +6,12 @@ const signup = async (req, res) => {
 
   if (await User.findOne({ email })) throw new Conflict(`User with email:${email} already exist`);
 
-  const user = await new User({ email }).setPassword(password).setName(name).setToken().save();
+  const user = await new User({ email })
+    .setPassword(password)
+    .setName(name)
+    .setToken()
+    .setDefaultAvatar()
+    .save();
 
   res.status(201).json({
     token: user.token,
@@ -15,6 +20,8 @@ const signup = async (req, res) => {
       name: user.name,
       balance: user.balance,
       categories: user.categories,
+      subscription: user.subscription,
+      avatarURL: user.avatarURL,
     },
   });
 };

@@ -1,3 +1,4 @@
+const path = require('path');
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -37,6 +38,7 @@ const userSchema = Schema(
       type: Number,
       default: 0,
     },
+    subscription: { type: String, default: 'basic' },
     categories: {
       income: { type: Array, default: ['regular income', 'irregular income'] },
       expense: {
@@ -55,6 +57,7 @@ const userSchema = Schema(
         ],
       },
     },
+    avatarURL: { type: String },
   },
   { versionKey: false, timestamps: true },
 );
@@ -88,6 +91,11 @@ userSchema.methods.incrementTotalTransactions = function () {
   return this;
 };
 
+userSchema.methods.setDefaultAvatar = function () {
+  this.avatarURL = path.join('avatars', 'defaultUserAvatar.jpg');
+  return this;
+};
+
 const signupJoiSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
   password: Joi.string().min(6).required(),
@@ -104,7 +112,7 @@ const emailJoiSchema = Joi.object({
 });
 
 const subscriptionJoiSchema = Joi.object({
-  subscription: Joi.string().valid('starter', 'pro', 'business').required(),
+  subscription: Joi.string().valid('basic', 'premium').required(),
 });
 
 const User = model('user', userSchema);
