@@ -15,6 +15,7 @@ const signup = async (req, res) => {
       name: user.name,
       balance: user.balance,
       categories: user.categories,
+      subscription: user.subscription,
     },
   });
 };

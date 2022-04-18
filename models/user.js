@@ -37,6 +37,7 @@ const userSchema = Schema(
       type: Number,
       default: 0,
     },
+    subscription: { type: String, default: 'basic' },
     categories: {
       income: { type: Array, default: ['regular income', 'irregular income'] },
       expense: {
@@ -104,7 +105,7 @@ const emailJoiSchema = Joi.object({
 });
 
 const subscriptionJoiSchema = Joi.object({
-  subscription: Joi.string().valid('starter', 'pro', 'business').required(),
+  subscription: Joi.string().valid('basic', 'premium').required(),
 });
 
 const User = model('user', userSchema);
