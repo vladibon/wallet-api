@@ -1,3 +1,4 @@
+const path = require('path');
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -56,6 +57,7 @@ const userSchema = Schema(
         ],
       },
     },
+    avatarURL: { type: String },
   },
   { versionKey: false, timestamps: true },
 );
@@ -86,6 +88,11 @@ userSchema.methods.setBalance = function (balance) {
 
 userSchema.methods.incrementTotalTransactions = function () {
   this.totalTransactions += 1;
+  return this;
+};
+
+userSchema.methods.setDefaultAvatar = function () {
+  this.avatarURL = path.join('avatars', 'defaultUserAvatar.jpg');
   return this;
 };
 

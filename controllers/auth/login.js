@@ -19,6 +19,7 @@ const login = async (req, res) => {
       balance: user.balance,
       categories: user.categories,
       subscription: user.subscription,
+      avatarURL: user.avatarURL,
     },
   });
 };
