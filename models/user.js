@@ -97,7 +97,9 @@ userSchema.methods.setDefaultAvatar = function () {
 };
 
 const signupJoiSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    'string.pattern.base': 'Please, enter valid email address',
+  }),
   password: Joi.string().min(6).required(),
   name: Joi.string().min(1).max(12).required(),
 });
@@ -107,8 +109,14 @@ const loginJoiSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const nameJoiSchema = Joi.object({
+  name: Joi.string().trim().min(1).max(12).required(),
+});
+
 const emailJoiSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    'string.pattern.base': 'Please, enter valid email address',
+  }),
 });
 
 const subscriptionJoiSchema = Joi.object({
@@ -121,6 +129,7 @@ module.exports = {
   User,
   signupJoiSchema,
   loginJoiSchema,
+  nameJoiSchema,
   emailJoiSchema,
   subscriptionJoiSchema,
 };
