@@ -14,4 +14,6 @@ router.patch(
 );
 router.patch('/avatars', auth, upload.single('avatar'), ctrlWrapper(ctrl.updateAvatar));
 
+router.delete('/delete', auth, ctrlWrapper(ctrl.deleteUser));
+
 module.exports = router;
