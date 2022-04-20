@@ -1,7 +1,7 @@
 const { Transaction } = require('../../models');
 
 const statsTransaction = async (req, res) => {
-  const { _id } = req.user;
+  const { _id, createdAt } = req.user;
   const { month, year } = req.query;
 
   const incomeR = await Transaction.aggregate([
@@ -11,7 +11,7 @@ const statsTransaction = async (req, res) => {
         type: true,
         date: {
           $gte: new Date(`${Number(month) + 1}/1/${year}`),
-          $lte: new Date(`${Number(month) + 1}/31/${year}`),
+          $lt: new Date(`${Number(month) + 2}/1/${year}`),
         },
       },
     },
@@ -33,7 +33,7 @@ const statsTransaction = async (req, res) => {
         type: false,
         date: {
           $gte: new Date(`${Number(month) + 1}/1/${year}`),
-          $lte: new Date(`${Number(month) + 1}/31/${year}`),
+          $lt: new Date(`${Number(month) + 2}/1/${year}`),
         },
       },
     },
@@ -68,7 +68,7 @@ const statsTransaction = async (req, res) => {
     expense,
     totalIncome,
     totalExpenses,
-    firstTransactionDate: firstTransaction?.date || null,
+    firstTransactionDate: firstTransaction?.date || createdAt,
   });
 };
 
