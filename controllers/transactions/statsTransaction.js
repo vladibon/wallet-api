@@ -68,7 +68,7 @@ const statsTransaction = async (req, res) => {
     expense,
     totalIncome,
     totalExpenses,
-    firstTransactionDate: firstTransaction.date,
+    firstTransactionDate: firstTransaction?.date || null,
   });
 };
 
