@@ -38,9 +38,15 @@ const userSchema = Schema(
       type: Number,
       default: 0,
     },
-    subscription: { type: String, default: 'basic' },
+    subscription: {
+      type: String,
+      default: 'basic',
+    },
     categories: {
-      income: { type: Array, default: ['regular income', 'irregular income'] },
+      income: {
+        type: Array,
+        default: ['regular income', 'irregular income'],
+      },
       expense: {
         type: Array,
         default: [
@@ -57,7 +63,9 @@ const userSchema = Schema(
         ],
       },
     },
-    avatarURL: { type: String },
+    avatarURL: {
+      type: String,
+    },
   },
   { versionKey: false, timestamps: true },
 );
