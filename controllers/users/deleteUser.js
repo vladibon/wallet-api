@@ -1,3 +1,5 @@
+const removeOldAvatars = require('../../services/removeOldAvatars');
+
 const { Transaction, User } = require('../../models');
 
 const deleteUser = async (req, res) => {
@@ -5,8 +7,9 @@ const deleteUser = async (req, res) => {
 
   await Transaction.deleteMany({ owner: _id });
   await User.deleteOne({ id: _id });
+  await removeOldAvatars(_id);
 
-  res.json({ message: 'User has been deleted' });
+  res.status(200).json({ message: 'User has been deleted' });
 };
 
 module.exports = deleteUser;

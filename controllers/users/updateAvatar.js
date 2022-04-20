@@ -3,6 +3,8 @@ const path = require('path');
 const Jimp = require('jimp');
 const { BadRequest } = require('http-errors');
 
+const removeOldAvatars = require('../../services/removeOldAvatars');
+
 const { User } = require('../../models');
 
 const updateAvatar = async (req, res) => {
@@ -20,6 +22,7 @@ const updateAvatar = async (req, res) => {
     const resultUpload = path.join(avatarsDir, newFileName);
     const avatarURL = path.join('avatars', newFileName);
 
+    await removeOldAvatars(_id);
     await fs.rename(tempUpload, resultUpload);
     await User.findByIdAndUpdate(_id, { avatarURL });
     await Jimp.read(resultUpload)
