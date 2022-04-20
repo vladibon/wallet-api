@@ -1,8 +1,11 @@
+// const moment = require('moment');
 const { Transaction } = require('../../models');
 
 const statsTransaction = async (req, res) => {
-  const { _id } = req.user;
+  const { _id, createdAt } = req.user;
   const { month, year } = req.query;
+  // console.log(moment().startOf('month'));
+  // console.log(moment(`${year}-0${month}`).daysInMonth());
 
   const incomeR = await Transaction.aggregate([
     {
@@ -68,7 +71,7 @@ const statsTransaction = async (req, res) => {
     expense,
     totalIncome,
     totalExpenses,
-    firstTransactionDate: firstTransaction?.date || null,
+    firstTransactionDate: firstTransaction?.date || createdAt,
   });
 };
 
