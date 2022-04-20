@@ -22,6 +22,7 @@ const signup = async (req, res) => {
       categories: user.categories,
       subscription: user.subscription,
       avatarURL: user.avatarURL,
+      signupDate: user.createdAt,
     },
   });
 };
