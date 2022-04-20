@@ -773,7 +773,8 @@
             }
           ],
           "totalIncome": 5600,
-          "totalExpenses": 1100
+          "totalExpenses": 1100,
+          "firstTransactionDate": "2012-04-20T09:23:41.105Z"
         }
       }
     },
