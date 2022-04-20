@@ -61,14 +61,14 @@ const statsTransaction = async (req, res) => {
     return sec;
   });
 
-  const [earliestTransaction] = await Transaction.find({ owner: _id }).sort({ date: 1 }).limit(1);
+  const [firstTransaction] = await Transaction.find({ owner: _id }).sort({ date: 1 }).limit(1);
 
   res.json({
     income,
     expense,
     totalIncome,
     totalExpenses,
-    earliestTransactionDate: earliestTransaction.date,
+    firstTransactionDate: firstTransaction.date,
   });
 };
 
