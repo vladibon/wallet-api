@@ -1,6 +1,5 @@
-const removeOldAvatars = require('../../services/removeOldAvatars');
-
 const { Transaction, User } = require('../../models');
+const removeOldAvatars = require('../../services/removeOldAvatars');
 
 const deleteUser = async (req, res) => {
   const { _id } = req.user;
