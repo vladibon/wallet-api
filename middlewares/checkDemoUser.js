@@ -7,11 +7,10 @@ const checkDemoUser = async (req, _, next) => {
   try {
     if (String(_id) === TEST_USER_ID)
       throw new Forbidden(`Sorry, demo version doesn't support this feature`);
+    next();
   } catch (error) {
     next(error);
   }
-
-  next();
 };
 
 module.exports = checkDemoUser;

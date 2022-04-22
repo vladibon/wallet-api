@@ -544,6 +544,97 @@
         }
       }
     },
+    "/api/users/avatars": {
+      "patch": {
+        "tags": ["Users"],
+        "name": "avatar",
+        "summary": "Update user avatar (requires authentication token)",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "base64"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Returns updated user avatar",
+            "content": {
+              "application/json": {
+                "avatarURL": {
+                  "type": "string",
+                  "description": "Url for fetching new user avatar",
+                  "example": "avatars/my-new-avatar.png"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Avatar should be provided"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Demo version doesn't support this",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry, demo version doesn't support this feature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users/delete": {
       "delete": {
         "tags": ["Users"],
@@ -1092,7 +1183,7 @@
           },
           "type": {
             "type": "boolean",
-            "description": "Deposit or withdraw",
+            "description": "'true' for deposit (income) and 'false' for withdraw (expense)",
             "example": true
           },
           "category": {
