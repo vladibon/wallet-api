@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "v1",
+    "version": "2.0.0",
     "title": "Wallet API overview",
     "description": "Wallet API overview",
     "license": {
@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json"],
+  "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
   "servers": [
     {
@@ -27,10 +27,6 @@
     {
       "name": "Users",
       "description": "User endpoints"
-    },
-    {
-      "name": "Categories",
-      "description": "Categories endpoint"
     },
     {
       "name": "Transactions",
@@ -60,13 +56,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User-registration-response"
+                  "$ref": "#/components/schemas/User-auth-response"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email, password and name should be provided"
+                    }
+                  }
+                }
+              }
+            }
           },
           "409": {
             "description": "Can't create user because email already taken",
@@ -106,7 +115,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User-login-response"
+                  "$ref": "#/components/schemas/User-auth-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email and password should be provided"
+                    }
+                  }
                 }
               }
             }
@@ -179,13 +204,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User-current-response"
+                  "$ref": "#/components/schemas/User-auth-response"
                 }
               }
             }
           },
           "401": {
-            "description": "User unauthorized",
+            "description": "User not authorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -203,29 +228,313 @@
         }
       }
     },
-    "/api/categories": {
-      "get": {
-        "tags": ["Categories"],
-        "summary": "get transaction categories",
+    "/api/users/category": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Add new transaction category",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Body of request for adding new category",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User-add-category-request"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": "Returns transaction categories",
+          "201": {
+            "description": "Returns updated transaction categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User-categories-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "income": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "expense": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
+                    "message": {
+                      "type": "string",
+                      "example": "Category type and name should be provided"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Demo version doesn't support this",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry, demo version doesn't support this feature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/name": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user name",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Body of request for update user name",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User-update-name-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns updated user name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User-update-name-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "New name should be provided"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Demo version doesn't support this",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry, demo version doesn't support this feature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/email": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user email",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Body of request for update user email",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User-update-email-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns updated transaction categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User-update-email-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "New email should be provided"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Demo version doesn't support this",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry, demo version doesn't support this feature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/subscription": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user subscription",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Body of request for update user subscription",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User-update-subscription-request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns updated user subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User-update-subscription-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Subscription should be provided"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
                     }
                   }
                 }
@@ -397,8 +706,35 @@
             "example": "3000"
           },
           "totalTransactions": {
-            "type": "number",
+            "type": "integer",
             "example": "200"
+          },
+          "subscription": {
+            "type": "string",
+            "example": "basic"
+          },
+          "categories": {
+            "type": "object",
+            "properties": {
+              "income": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": ["regular", "irregular"]
+              },
+              "expense": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": ["food", "education"]
+              }
+            }
+          },
+          "avatarURL": {
+            "type": "string",
+            "example": "avatars/Mango.png"
           }
         }
       },
@@ -408,6 +744,7 @@
         "properties": {
           "email": {
             "type": "string",
+            "format": "email",
             "description": "User's email",
             "example": "mango@gmail.com"
           },
@@ -423,7 +760,22 @@
           }
         }
       },
-      "User-registration-response": {
+      "User-login-request": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "mango@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "strong_password"
+          }
+        }
+      },
+      "User-auth-response": {
         "type": "object",
         "properties": {
           "token": {
@@ -436,73 +788,159 @@
               "email": {
                 "type": "string",
                 "description": "User's email",
+                "format": "email",
                 "example": "mango@gmail.com"
               },
               "name": {
                 "type": "string",
+                "description": "User's name",
                 "example": "Mango"
               },
               "balance": {
                 "type": "Number",
+                "description": "User's balance",
                 "example": "0"
+              },
+              "subscription": {
+                "type": "string",
+                "description": "User's subscription",
+                "example": "basic"
+              },
+              "categories": {
+                "type": "object",
+                "description": "User's personal transactions categories",
+                "properties": {
+                  "income": {
+                    "type": "array",
+                    "example": ["regular", "irregular"]
+                  },
+                  "expense": {
+                    "type": "array",
+                    "example": ["food", "education"]
+                  }
+                }
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's personal avatar url",
+                "example": "avatars/Mango.png"
               }
             }
           }
         }
       },
-      "User-login-request": {
+      "User-add-category-request": {
         "type": "object",
+        "required": ["category", "type"],
         "properties": {
-          "email": {
+          "type": { "type": "boolean", "example": "true" },
+          "category": {
             "type": "string",
-            "example": "mango@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "strong_password"
+            "example": "school fund"
           }
         }
       },
-      "User-login-response": {
+      "User-categories-response": {
         "type": "object",
         "properties": {
-          "token": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDhjMzliNmU1MmQ1MWFlZWFiY2MzMyIsImlhdCI6MTY0ODkzNzY1OSwiZXhwIjoxNjQ5MDI0MDU5fQ.R_xVuzsK9Nzs9sj98Lk1lidJB27xDUjhYBOiPU-_fmY"
-          },
-          "user": {
+          "categories": {
             "type": "object",
+            "description": "Updated user categories",
             "properties": {
-              "email": {
-                "type": "string",
-                "example": "mango@gmail.com"
+              "income": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": ["regular", "irregular"]
               },
-              "name": {
-                "type": "string",
-                "example": "Mango"
-              },
-              "balance": {
-                "type": "Number",
-                "example": "0"
+              "expense": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": ["food", "education"]
               }
             }
+          },
+          "message": {
+            "type": "string",
+            "example": "New category {{category}} created successfully"
           }
         }
       },
-      "User-current-response": {
+      "User-update-name-request": {
         "type": "object",
+        "required": ["name"],
         "properties": {
-          "email": {
-            "type": "string",
-            "example": "mango@gmail.com"
-          },
           "name": {
             "type": "string",
-            "example": "Mango"
+            "example": "Kiwi"
+          }
+        }
+      },
+      "User-update-name-response": {
+        "type": "object",
+        "description": "Updated user name",
+        "properties": {
+          "name": {
+            "type": "object",
+            "description": "Updated user name",
+            "example": "Kiwi"
           },
-          "balance": {
-            "type": "number",
-            "example": 0.0
+          "message": {
+            "type": "string",
+            "example": "User name updated successfully"
+          }
+        }
+      },
+      "User-update-email-request": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "new@email.com"
+          }
+        }
+      },
+      "User-update-email-response": {
+        "type": "object",
+        "description": "Updated user email",
+        "properties": {
+          "email": {
+            "type": "object",
+            "format": "email",
+            "description": "Updated user email",
+            "example": "new@email.com"
+          },
+          "message": {
+            "type": "string",
+            "example": "User email updated successfully"
+          }
+        }
+      },
+      "User-update-subscription-request": {
+        "type": "object",
+        "required": ["subscription"],
+        "properties": {
+          "subscription": {
+            "type": "string",
+            "example": "premium"
+          }
+        }
+      },
+      "User-update-subscription-response": {
+        "type": "object",
+        "description": "Updated user subscription",
+        "properties": {
+          "subscription": {
+            "example": "premium"
+          },
+          "message": {
+            "type": "string",
+            "example": "User subscription updated successfully"
           }
         }
       },
@@ -783,23 +1221,6 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
-      }
-    }
-  },
-  "definitions": {
-    "Pet": {
-      "required": ["id", "name"],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "tag": {
-          "type": "string"
-        }
       }
     }
   }
