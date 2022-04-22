@@ -10,6 +10,8 @@ const checkDemoUser = async (req, _, next) => {
   } catch (error) {
     next(error);
   }
+
+  next();
 };
 
 module.exports = checkDemoUser;
