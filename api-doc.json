@@ -99,7 +99,7 @@
     "/api/auth/login": {
       "post": {
         "tags": ["Auth"],
-        "summary": "login user",
+        "summary": "Login user",
         "requestBody": {
           "content": {
             "application/json": {
@@ -158,7 +158,7 @@
     "/api/auth/logout": {
       "get": {
         "tags": ["Auth"],
-        "summary": "logout user (requires authentication token)",
+        "summary": "Logout user (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -191,7 +191,7 @@
     "/api/users/current": {
       "get": {
         "tags": ["Users"],
-        "summary": "get user information (requires authentication token)",
+        "summary": "Get user information (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -231,7 +231,7 @@
     "/api/users/category": {
       "post": {
         "tags": ["Users"],
-        "summary": "Add new transaction category",
+        "summary": "Add new transaction category (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -314,7 +314,7 @@
     "/api/users/name": {
       "patch": {
         "tags": ["Users"],
-        "summary": "Update user name",
+        "summary": "Update user name (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -397,7 +397,7 @@
     "/api/users/email": {
       "patch": {
         "tags": ["Users"],
-        "summary": "Update user email",
+        "summary": "Update user email (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -480,7 +480,7 @@
     "/api/users/subscription": {
       "patch": {
         "tags": ["Users"],
-        "summary": "Update user subscription",
+        "summary": "Update user subscription (requires authentication token)",
         "parameters": [],
         "security": [
           {
@@ -544,11 +544,78 @@
         }
       }
     },
+    "/api/users/delete": {
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user from database (requires authentication token)",
+        "parameters": [],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deletes user",
+            "content": {
+              "application/json": {
+                "message": "User has been deleted"
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Demo version doesn't support this",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry, demo version doesn't support this feature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/transactions": {
       "get": {
         "tags": ["Transactions"],
         "summary": "Get user's transactions (requires authentication token)",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "type": "integer",
+            "name": "page",
+            "description": "Requested page number"
+          },
+          {
+            "in": "query",
+            "type": "integer",
+            "name": "limit",
+            "description": "Requested limit items per page number"
+          }
+        ],
         "security": [
           {
             "Bearer": []
@@ -560,13 +627,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Transactions-list-response"
+                  "$ref": "#/components/schemas/Transactions-response"
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -596,13 +676,42 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Transaction-response"
+                  "$ref": "#/components/schemas/Transactions-response"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Date, amount and category should be provided"
+                    }
+                  }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -633,7 +742,20 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -642,23 +764,25 @@
       "get": {
         "tags": ["Transactions"],
         "summary": "Get user's transactions statistic (requires authentication token)",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "type": "string",
+            "name": "month",
+            "description": "Requested month of transactions statistics"
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "year",
+            "description": "Requested year of transactions statistics"
+          }
+        ],
         "security": [
           {
             "Bearer": []
           }
         ],
-        "requestBody": {
-          "description": "Body of request for get user's transactions statistic",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Transactions-stats-request"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "User's Transactions statistics",
@@ -671,7 +795,20 @@
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "User not authorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not authorized"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -944,8 +1081,40 @@
           }
         }
       },
-      "Transactions-list-response": {
+      "Transactions-request": {
         "type": "object",
+        "required": ["date", "amount", "category"],
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "Date of transaction",
+            "example": "2022-01-03T23:00:00.000Z"
+          },
+          "type": {
+            "type": "boolean",
+            "description": "Deposit or withdraw",
+            "example": true
+          },
+          "category": {
+            "type": "string",
+            "description": "Category",
+            "example": "Food"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comment",
+            "example": "About a transactions"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of transaction",
+            "example": 700
+          }
+        }
+      },
+      "Transactions-response": {
+        "type": "object",
+        "description": "User's finance data: transactions, balance, current page, total pages",
         "properties": {
           "transactions": {
             "type": "array",
@@ -974,135 +1143,22 @@
                 },
                 "amount": {
                   "type": "number",
-                  "description": "amount",
-                  "example": 700
+                  "description": "Amount of transaction",
+                  "example": 50
                 },
-                "createdAt": {
+                "comment": {
                   "type": "string",
-                  "description": "Date of creation",
-                  "example": "2022-01-03T23:00:00.000Z"
+                  "description": "Comment to the transaction",
+                  "example": "Went to the cinema"
                 },
-                "updatedAt": {
-                  "type": "string",
-                  "description": "Date of modification",
-                  "example": "2022-01-03T23:00:00.000Z"
-                }
-              }
-            }
-          },
-          "balance": {
-            "type": "number",
-            "description": "Balance from User.balance",
-            "example": 0
-          },
-          "page": {
-            "type": "number",
-            "description": "Page for pagination",
-            "example": 1
-          }
-        },
-        "example": {
-          "transactions": [
-            {
-              "_id": "624aa2c0f3a2ee5f009b105d",
-              "date": "04.04.2022 07:48",
-              "type": true,
-              "category": "Car",
-              "comment": "",
-              "amount": 700,
-              "balance": 700,
-              "createdAt": "2022-04-04T07:48:16.807Z",
-              "updatedAt": "2022-04-04T07:48:16.807Z"
-            },
-            {
-              "_id": "624aa2c8f3a2ee5f009b1061",
-              "date": "04.04.2022 07:48",
-              "type": true,
-              "category": "Food",
-              "comment": "",
-              "amount": 700,
-              "balance": 1400,
-              "createdAt": "2022-04-04T07:48:24.034Z",
-              "updatedAt": "2022-04-04T07:48:24.034Z"
-            }
-          ],
-          "balance": 1400,
-          "page": 1,
-          "totalPages": 1
-        }
-      },
-      "Transactions-request": {
-        "type": "object",
-        "required": ["date", "amount"],
-        "properties": {
-          "date": {
-            "type": "string",
-            "description": "Date of transaction",
-            "example": "2022-01-03T23:00:00.000Z"
-          },
-          "type": {
-            "type": "boolean",
-            "description": "Deposit or withdraw",
-            "example": true
-          },
-          "category": {
-            "type": "string",
-            "description": "Category",
-            "example": "Food"
-          },
-          "comment": {
-            "type": "string",
-            "description": "Comment",
-            "example": "About a transactions"
-          },
-          "amount": {
-            "type": "number",
-            "description": "Amount",
-            "example": 700
-          }
-        }
-      },
-      "Transaction-response": {
-        "type": "object",
-        "properties": {
-          "transactions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "_id": {
-                  "type": "string",
-                  "description": "Transaction id",
-                  "example": "624aa2c0f3a2ee5f009b105d"
-                },
-                "date": {
-                  "type": "string",
-                  "description": "Date of transaction",
-                  "example": "2022-01-03T23:00:00.000Z"
-                },
-                "type": {
-                  "type": "boolean",
-                  "description": "Deposit or withdraw",
-                  "example": true
-                },
-                "category": {
-                  "type": "string",
-                  "description": "Category",
-                  "example": "Car"
-                },
-                "amount": {
+                "balance": {
                   "type": "number",
-                  "description": "amount",
+                  "description": "Total balance after the transaction",
                   "example": 700
                 },
                 "createdAt": {
                   "type": "string",
                   "description": "Date of creation",
-                  "example": "2022-01-03T23:00:00.000Z"
-                },
-                "updatedAt": {
-                  "type": "string",
-                  "description": "Date of modification",
                   "example": "2022-01-03T23:00:00.000Z"
                 }
               }
@@ -1111,108 +1167,77 @@
           "balance": {
             "type": "number",
             "description": "Balance from User.balance",
-            "example": 0
+            "example": 700
           },
           "page": {
             "type": "number",
             "description": "Page for pagination",
             "example": 1
-          }
-        },
-        "example": {
-          "transactions": [
-            {
-              "_id": "624aa2c0f3a2ee5f009b105d",
-              "date": "04.04.2022 07:48",
-              "type": true,
-              "category": "Car",
-              "comment": "",
-              "amount": 700,
-              "balance": 700,
-              "createdAt": "2022-04-04T07:48:16.807Z",
-              "updatedAt": "2022-04-04T07:48:16.807Z"
-            },
-            {
-              "_id": "624aa2c8f3a2ee5f009b1061",
-              "date": "04.04.2022 07:48",
-              "type": true,
-              "category": "Food",
-              "comment": "",
-              "amount": 700,
-              "balance": 1400,
-              "createdAt": "2022-04-04T07:48:24.034Z",
-              "updatedAt": "2022-04-04T07:48:24.034Z"
-            }
-          ],
-          "balance": 1400,
-          "page": 1,
-          "totalPages": 1
-        }
-      },
-      "Transactions-stats-request": {
-        "type": "object",
-        "required": ["month", "year"],
-        "properties": {
-          "month": {
-            "type": "string",
-            "description": "Index of month (0 - 11)",
-            "example": "6"
           },
-          "year": {
-            "type": "string",
-            "description": "Year",
-            "example": "2022"
+          "totalPages": {
+            "type": "number",
+            "description": "Total pages amount for pagination",
+            "example": 4
           }
         }
       },
       "Transactions-stats-response": {
         "type": "object",
+        "description": "Statistics for user transactions",
         "properties": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "category": {
-                "type": "string",
-                "description": "Category",
-                "example": "Car"
-              },
-              "totalSum": {
-                "type": "number",
-                "description": "Total sum of the current category",
-                "example": 0
+          "income": {
+            "type": "array",
+            "description": "Array of income statistics",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "description": "Name of the category",
+                  "example": "Regular income"
+                },
+                "sum": {
+                  "type": "number",
+                  "description": "Total sum of all transactions in this category",
+                  "example": 700
+                }
               }
             }
+          },
+          "expense": {
+            "type": "array",
+            "description": "Array of expense statistics",
+            "items": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "description": "Name of the category",
+                  "example": "Food"
+                },
+                "sum": {
+                  "type": "number",
+                  "description": "Total sum of all transactions in this category",
+                  "example": 230
+                }
+              }
+            }
+          },
+          "totalIncome": {
+            "type": "number",
+            "description": "Total sum of all income transactions",
+            "example": 1220
+          },
+          "totalExpenses": {
+            "type": "number",
+            "description": "Total sum of all expense transactions",
+            "example": 208
+          },
+          "firstTransactionDate": {
+            "type": "string",
+            "description": "Date of the most early transaction of all",
+            "example": "2012-04-20T09:23:41.105Z"
           }
-        },
-        "example": {
-          "income": [
-            {
-              "category": "regular income",
-              "sum": 3600
-            },
-            {
-              "category": "irregular income",
-              "sum": 2000
-            }
-          ],
-          "expense": [
-            {
-              "category": "Food",
-              "sum": 300
-            },
-            {
-              "category": "Car",
-              "sum": 200
-            },
-            {
-              "category": "Education",
-              "sum": 600
-            }
-          ],
-          "totalIncome": 5600,
-          "totalExpenses": 1100,
-          "firstTransactionDate": "2012-04-20T09:23:41.105Z"
         }
       }
     },
