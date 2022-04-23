@@ -2,9 +2,7 @@ const fs = require('fs/promises');
 const path = require('path');
 const Jimp = require('jimp');
 const { BadRequest } = require('http-errors');
-
 const removeOldAvatars = require('../../services/removeOldAvatars');
-
 const { User } = require('../../models');
 
 const updateAvatar = async (req, res) => {
