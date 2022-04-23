@@ -10,7 +10,6 @@ const transactionSchema = Schema(
     type: {
       type: Boolean,
       default: false,
-      // true - income, false - expense
     },
     category: {
       type: String,
