@@ -3,7 +3,7 @@ const { Transaction } = require('../../models');
 
 const listTransactions = async (req, res) => {
   const { _id, balance, totalTransactions } = req.user;
-  const { page = 1, limit = 8 } = req.query;
+  const { page = 1, limit = 12 } = req.query;
 
   if (page < 1 || limit < 1) throw new BadRequest('Page and limit must be positive');
 

@@ -4,21 +4,24 @@ const { Transaction, User } = require('../../models');
 const addTransaction = async (req, res) => {
   const { _id, balance } = req.user;
   const { date, type, amount } = req.body;
-  const limit = 8;
+  const limit = 12;
 
-  let newBalance = (type ? balance + Number(amount) : balance - Number(amount)).toFixed(2);
+  let newBalance = Number((type ? balance + Number(amount) : balance - Number(amount)).toFixed(2));
 
   const checkingNextTransactions = await Transaction.find({
     owner: _id,
     date: { $gte: date },
-  }).sort({ date: -1, createdAt: -1 });
+  }).sort({
+    date: -1,
+    createdAt: -1,
+  });
 
   const checkingTransactions = [...checkingNextTransactions, { ...req.body }];
 
   checkingTransactions.reduce((balance, tr) => {
     if (balance < 0) throw new BadRequest('Balance cannot be negative');
 
-    return tr.type ? balance - tr.amount : balance + tr.amount;
+    return tr.type ? balance - Number(tr.amount) : balance + Number(tr.amount);
   }, newBalance);
 
   const user = await User.findById(_id);
@@ -27,17 +30,22 @@ const addTransaction = async (req, res) => {
 
   await Transaction.create({ ...req.body, owner: _id });
 
-  const nextTransactions = await Transaction.find({ owner: _id, date: { $gte: date } }).sort({
+  const nextTransactions = await Transaction.find({
+    owner: _id,
+    date: { $gte: date },
+  }).sort({
     date: -1,
     createdAt: -1,
   });
 
   for (let i = 0; i < nextTransactions.length; i += 1) {
-    await Transaction.findByIdAndUpdate(nextTransactions[i]._id, { balance: newBalance });
+    await Transaction.findByIdAndUpdate(nextTransactions[i]._id, {
+      balance: Number(newBalance.toFixed(2)),
+    });
 
     nextTransactions[i].type
-      ? (newBalance -= nextTransactions[i].amount).toFixed(2)
-      : (newBalance += nextTransactions[i].amount).toFixed(2);
+      ? (newBalance -= nextTransactions[i].amount)
+      : (newBalance += nextTransactions[i].amount);
   }
 
   const transactions = await Transaction.find({ owner: _id }, { owner: 0 }, { limit }).sort({
