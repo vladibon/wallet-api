@@ -3,6 +3,10 @@
 Web Server for the [Wallet app](https://github.com/vladibon/wallet); Team project, developed by
 Go-IT students
 
+## Documentation
+
+[Wallet API](https://wallet-proj.herokuapp.com/api-docs/)
+
 ## Developers team
 
 - Team leader [Vladimir Bondar](https://github.com/vladibon);
