@@ -13,6 +13,9 @@
   "produces": ["application/json"],
   "servers": [
     {
+      "url": "https://wallet-proj.herokuapp.com/"
+    },
+    {
       "url": "https://wallet-proj.osc-fr1.scalingo.io/"
     },
     {
