@@ -998,11 +998,11 @@
           "email": {
             "type": "string",
             "format": "email",
-            "example": "mango@gmail.com"
+            "example": "guest@gmail.com"
           },
           "password": {
             "type": "string",
-            "example": "strong_password"
+            "example": "f8kd8ddld9dd"
           }
         }
       },
@@ -1020,12 +1020,12 @@
                 "type": "string",
                 "description": "User's email",
                 "format": "email",
-                "example": "mango@gmail.com"
+                "example": "guest@gmail.com"
               },
               "name": {
                 "type": "string",
                 "description": "User's name",
-                "example": "Mango"
+                "example": "Guest"
               },
               "balance": {
                 "type": "Number",
